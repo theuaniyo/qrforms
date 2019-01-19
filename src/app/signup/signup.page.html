@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Regístro</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <form>
+        <ion-item>
+            <ion-input placeholder="E-mail" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Contraseña" type="password"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Repite la contraseña" type="password"></ion-input>
+        </ion-item>
+        <ion-row>
+            <ion-button color="primary" type="submit">Regístrate</ion-button>
+        </ion-row>
+    </form>
+    <ion-row>
+        <ion-label color="primary">¿Ya tienes cuenta?
+            <ion-button [routerLink]="'/login'">Inicia sesión</ion-button>
+        </ion-label>
+    </ion-row>
+</ion-content>

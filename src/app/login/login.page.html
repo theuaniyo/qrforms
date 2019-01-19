@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Iniciar sesión</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-input placeholder="E-mail" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-input placeholder="Contraseña" type="password"></ion-input>
+    </ion-item>
+    <ion-row>
+        <ion-button color="primary">Iniciar sesión</ion-button>
+    </ion-row>
+    <ion-row>
+        <ion-label color="primary">¿No tienes cuenta?
+            <ion-button [routerLink]="'/signup'">Regístrate</ion-button>
+        </ion-label>
+    </ion-row>
+</ion-content>
