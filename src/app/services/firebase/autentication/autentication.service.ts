@@ -7,18 +7,18 @@ import {auth} from 'firebase/app';
 })
 export class AutenticationService {
 
-    constructor(public afAuth: AngularFireAuth) {
+    constructor(public fireAuth: AngularFireAuth) {
     }
 
     signUp(userData: any) {
-        return this.afAuth.auth.createUserWithEmailAndPassword(userData.email, userData.password);
+        return this.fireAuth.auth.createUserWithEmailAndPassword(userData.email, userData.password);
     }
 
     logIn(userData: any) {
-        return this.afAuth.auth.signInWithEmailAndPassword(userData.email, userData.password);
+        return this.fireAuth.auth.signInWithEmailAndPassword(userData.email, userData.password);
     }
 
     logOut() {
-        return this.afAuth.auth.signOut();
+        return this.fireAuth.auth.signOut();
     }
 }

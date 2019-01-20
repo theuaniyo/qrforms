@@ -5,15 +5,17 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-item>
-        <ion-input placeholder="E-mail" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-input placeholder="Contraseña" type="password"></ion-input>
-    </ion-item>
-    <ion-row>
-        <ion-button color="primary">Iniciar sesión</ion-button>
-    </ion-row>
+    <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+            <ion-input placeholder="E-mail" type="text" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Contraseña" type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-row>
+            <ion-button color="primary" type="submit">Iniciar sesión</ion-button>
+        </ion-row>
+    </form>
     <ion-row>
         <ion-label color="primary">¿No tienes cuenta?
             <ion-button [routerLink]="'/signup'">Regístrate</ion-button>
