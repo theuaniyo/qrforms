@@ -1,20 +1,22 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Regístro</ion-title>
+        <ion-title>Registro</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <form>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
         <ion-item>
-            <ion-input placeholder="E-mail" type="text"></ion-input>
+            <ion-input placeholder="E-mail" type="text" formControlName="email"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-input placeholder="Contraseña" type="password"></ion-input>
+            <ion-input placeholder="Contraseña" type="password" formControlName="password"></ion-input>
         </ion-item>
+        <!--
         <ion-item>
             <ion-input placeholder="Repite la contraseña" type="password"></ion-input>
         </ion-item>
+        -->
         <ion-row>
             <ion-button color="primary" type="submit">Regístrate</ion-button>
         </ion-row>

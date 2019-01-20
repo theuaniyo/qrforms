@@ -3,8 +3,18 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+    production: false,
+    // Initialize Firebase
+    firebaseConfig: {
+        apiKey: 'AIzaSyBjexWEyTQiIZRpbli2-Q5-I8s2s9JAFJI',
+        authDomain: 'qrforms-9ca71.firebaseapp.com',
+        databaseURL: 'https://qrforms-9ca71.firebaseio.com',
+        projectId: 'qrforms-9ca71',
+        storageBucket: 'qrforms-9ca71.appspot.com',
+        messagingSenderId: '980213451659'
+    }
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file
