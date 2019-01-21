@@ -1,14 +1,17 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StorageService {
 
+    collection: AngularFirestoreCollection<any>;
     data: any;
 
-    constructor(private fireStore: AngularFirestore) {
+    constructor(private firestore: AngularFirestore) {
+        this.collection = firestore.collection<any>('prueba');
     }
 
     createUserStorage() {

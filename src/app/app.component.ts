@@ -3,6 +3,8 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {AutenticationService} from './services/firebase/autentication/autentication.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -14,19 +16,15 @@ export class AppComponent {
             title: 'Principal',
             url: '/home',
             icon: 'home'
-        },
-        {
-            title: 'Login',
-            url: '/login',
-            icon: 'log-in'
         }
     ];
-    rootPage: any = 'TabsPage';
 
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
-        private statusBar: StatusBar
+        private statusBar: StatusBar,
+        private firebaseAuth: AutenticationService,
+        private router: Router
     ) {
         this.initializeApp();
     }
@@ -36,5 +34,14 @@ export class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+    }
+
+    logOut() {
+        this.firebaseAuth.logOut()
+            .then(() => {
+                this.router.navigate(['/login'])
+                    .catch(reason => console.log(reason));
+            })
+            .catch(reason => console.log(reason));
     }
 }

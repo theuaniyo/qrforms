@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AutenticationService} from '../services/firebase/autentication/autentication.service';
 import {Router} from '@angular/router';
+import {StorageService} from '../services/firebase/storage/storage.service';
 
 @Component({
     selector: 'app-signup',
@@ -13,7 +14,11 @@ export class SignupPage implements OnInit {
     signUpForm: FormGroup;
     userData: any;
 
-    constructor(private formBuilder: FormBuilder, private authentication: AutenticationService, private router: Router) {
+    constructor(private formBuilder: FormBuilder,
+                private authentication: AutenticationService,
+                private router: Router,
+                private fireStorage: StorageService
+    ) {
     }
 
     ngOnInit() {
@@ -29,6 +34,8 @@ export class SignupPage implements OnInit {
             .then(() => {
                 this.router.navigate(['/home'])
                     .catch(reason => console.log(reason));
+
+                this.fireStorage.createUserStorage();
             })
             .catch(reason => console.log(reason));
     }

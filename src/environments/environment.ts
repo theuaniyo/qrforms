@@ -11,7 +11,8 @@ export const environment = {
         databaseURL: 'https://qrforms-9ca71.firebaseio.com',
         projectId: 'qrforms-9ca71',
         storageBucket: 'qrforms-9ca71.appspot.com',
-        messagingSenderId: '980213451659'
+        messagingSenderId: '980213451659',
+        appTag: 'qr-forms'
     }
 };
 
