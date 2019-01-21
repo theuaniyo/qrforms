@@ -1,5 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonSlides} from '@ionic/angular';
+import {AutenticationService} from '../services/firebase/autentication/autentication.service';
+import {Router} from '@angular/router';
+import {StorageService} from '../services/firebase/storage/storage.service';
 
 @Component({
     selector: 'app-home',
@@ -14,10 +17,23 @@ export class HomePage {
     public category: any = '0';
     ntabs = 3;
 
-    constructor() {}
+    constructor(private fireAuth: AutenticationService,
+                private router: Router,
+                private fireStorage: StorageService) {
+    }
 
     ionViewDidEnter() {
         this.SwipedTabsIndicator = document.getElementById('indicator');
+        // PARA QUE CUANDO RECARGUE EL EMULADOR DEL MÓVIL VUELVA A LA PÁGINA DE LOGIN ¿CÓMO SE MANTIENE LA SESIÓN INICIADA?
+        this.fireAuth.isLogged().subscribe(isLogged => {
+            if (isLogged) {
+                // this.getCurrentUser();
+            } else {
+                this.router.navigate(['/login'])
+                    .catch(reason => console.log(reason));
+            }
+        });
+        this.hasQrId();
     }
 
     /* Actualiza la categoría que esté en ese momento activa*/
@@ -44,5 +60,13 @@ export class HomePage {
             this.SwipedTabsIndicator.style.webkitTransform = 'translate3d(' +
                 ((e.target.swiper.progress * (this.ntabs - 1)) * 100) + '%,0,0)';
         }
+    }
+
+    getCurrentUser() {
+        return this.fireAuth.getCurrentUser();
+    }
+
+    hasQrId() {
+        this.fireStorage.hasQrID(this.getCurrentUser());
     }
 }

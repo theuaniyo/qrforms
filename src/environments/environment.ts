@@ -12,7 +12,8 @@ export const environment = {
         projectId: 'qrforms-9ca71',
         storageBucket: 'qrforms-9ca71.appspot.com',
         messagingSenderId: '980213451659',
-        appTag: 'qr-forms'
+        appUsers: 'Users',
+        appForms: 'Forms'
     }
 };
 

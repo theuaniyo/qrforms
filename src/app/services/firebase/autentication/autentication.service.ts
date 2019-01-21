@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {auth} from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'
@@ -20,5 +19,13 @@ export class AutenticationService {
 
     logOut() {
         return this.fireAuth.auth.signOut();
+    }
+
+    isLogged() {
+        return this.fireAuth.authState;
+    }
+
+    getCurrentUser() {
+        return this.fireAuth.auth.currentUser.email;
     }
 }

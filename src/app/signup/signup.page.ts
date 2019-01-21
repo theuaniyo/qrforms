@@ -32,10 +32,12 @@ export class SignupPage implements OnInit {
         this.userData = this.saveUserdata();
         this.authentication.signUp(this.userData)
             .then(() => {
-                this.router.navigate(['/home'])
+                this.fireStorage.createUserStorage(this.userData.email)
+                    .then(() => {
+                        this.router.navigate(['/home'])
+                            .catch(reason => console.log(reason));
+                    })
                     .catch(reason => console.log(reason));
-
-                this.fireStorage.createUserStorage();
             })
             .catch(reason => console.log(reason));
     }

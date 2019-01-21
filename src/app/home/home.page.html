@@ -4,7 +4,7 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
-            Principal
+            {{getCurrentUser()}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -36,7 +36,9 @@
         <ion-slide>
             <ion-content class="fixed-scroll">
                 <ion-list>
-                    <ion-avatar slot="start"></ion-avatar>
+                    <ion-item>
+                        <ion-icon slot="start" src="../../assets/app-icons/logo.svg"></ion-icon>
+                    </ion-item>
                 </ion-list>
             </ion-content>
         </ion-slide>
