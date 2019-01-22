@@ -25,16 +25,26 @@ export class StorageService {
         return this.usersCollection.ref.where('email', '==', currentUser).get();
     }
 
-    hasQrID(currentUser) {
-        this.usersCollection.ref.where('email', '==', currentUser).firestore.doc('qrId').get()
-            .then(docSnapshot => {
-                console.log(docSnapshot);
-                if (docSnapshot.exists) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
+    hasQrID(currentUser): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.getUserData(currentUser)
+                .then((d) => {
+                    console.log(d.docs);
+                    if (d.docs.length > 0) {
+                        console.log(d.docs[0]);
+                        console.log(d.docs[0].data());
+                        const data = d.docs[0].data()['qrId'];
+                        console.log(data);
+                        if (data) {
+                            resolve(true);
+                        } else {
+                            resolve(false);
+                        }
+                    } else {
+                        resolve(false);
+                    }
+                });
+        });
     }
 }
 

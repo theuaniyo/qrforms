@@ -16,6 +16,8 @@ export class HomePage {
     tabs = ['selectTab(0)', 'selectTab(1)', 'selectTab(2)'];
     public category: any = '0';
     ntabs = 3;
+    currentUser: any;
+    qrId: any = false;
 
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
@@ -27,13 +29,14 @@ export class HomePage {
         // PARA QUE CUANDO RECARGUE EL EMULADOR DEL MÓVIL VUELVA A LA PÁGINA DE LOGIN ¿CÓMO SE MANTIENE LA SESIÓN INICIADA?
         this.fireAuth.isLogged().subscribe(isLogged => {
             if (isLogged) {
-                // this.getCurrentUser();
+                this.currentUser = this.getCurrentUser();
+                this.qrId = this.hasQrId();
             } else {
                 this.router.navigate(['/login'])
                     .catch(reason => console.log(reason));
             }
         });
-        this.hasQrId();
+        // this.hasQrId();
     }
 
     /* Actualiza la categoría que esté en ese momento activa*/
@@ -67,6 +70,6 @@ export class HomePage {
     }
 
     hasQrId() {
-        this.fireStorage.hasQrID(this.getCurrentUser());
+        return this.fireStorage.hasQrID(this.currentUser);
     }
 }

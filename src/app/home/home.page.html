@@ -4,7 +4,7 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
-            {{getCurrentUser()}}
+            {{currentUser}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -38,6 +38,8 @@
                 <ion-list>
                     <ion-item>
                         <ion-icon slot="start" src="../../assets/app-icons/logo.svg"></ion-icon>
+                        <ion-label *ngIf="qrId">trueee</ion-label>
+                        <ion-label *ngIf="!qrId">false</ion-label>
                     </ion-item>
                 </ion-list>
             </ion-content>
