@@ -27,7 +27,8 @@ export class HomePage {
     ionViewDidEnter() {
         this.SwipedTabsIndicator = document.getElementById('indicator');
         // PARA QUE CUANDO RECARGUE EL EMULADOR DEL MÓVIL VUELVA A LA PÁGINA DE LOGIN ¿CÓMO SE MANTIENE LA SESIÓN INICIADA?
-        this.fireAuth.isLogged().subscribe(isLogged => {
+        this.fireAuth.isLogged()
+            .subscribe(isLogged => {
             if (isLogged) {
                 this.currentUser = this.getCurrentUser();
                 this.hasQrId();
@@ -49,7 +50,8 @@ export class HomePage {
 
     /* El método que permite actualizar el indicado cuando se cambia de slide*/
     updateIndicatorPosition() {
-        this.SwipedTabsSlider.getActiveIndex().then(i => {
+        this.SwipedTabsSlider.getActiveIndex()
+            .then(i => {
             if (this.ntabs > i) {  // this condition is to avoid passing to incorrect index
                 this.SwipedTabsIndicator.style.webkitTransform = 'translate3d(' + (i * 100) + '%,0,0)';
             }
@@ -74,5 +76,11 @@ export class HomePage {
             .then(value => {
                 this.qrId = value;
             });
+    }
+
+    goToQrIdForm() {
+        this.router.navigate(['/qr-id-form'])
+            .then(value => console.log(value))
+            .catch(reason => console.log(reason));
     }
 }

@@ -26,15 +26,15 @@ export class StorageService {
     }
 
     hasQrID(currentUser): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.getUserData(currentUser)
                 .then((d) => {
-                    console.log(d.docs);
+                    // console.log(d.docs);
                     if (d.docs.length > 0) {
-                        console.log(d.docs[0]);
-                        console.log(d.docs[0].data());
+                        // console.log(d.docs[0]);
+                        // console.log(d.docs[0].data());
                         const data = d.docs[0].data()['qrId'];
-                        console.log(data);
+                        // console.log(data);
                         if (data != null) {
                             resolve(true);
                         } else {
@@ -45,6 +45,10 @@ export class StorageService {
                     }
                 });
         });
+    }
+
+    createQrId(idToken, data) {
+        return this.firestore.doc('Users/' + idToken).set(data);
     }
 }
 

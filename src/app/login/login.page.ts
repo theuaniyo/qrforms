@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
     }
 
     onSubmit() {
-        this.userData = this.saveUserdata();
+        this.userData = this.saveUserData();
         this.auth.logIn(this.userData)
             .then(() => {
                 this.router.navigate(['/home'])
@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
             .catch(reason => console.log(reason));
     }
 
-    saveUserdata() {
+    saveUserData() {
         return {
             email: this.logInForm.get('email').value,
             password: this.logInForm.get('password').value,

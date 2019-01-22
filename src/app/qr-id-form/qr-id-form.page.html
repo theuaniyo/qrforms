@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>QrIdForm</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="qrIdForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+            <ion-input placeholder="Nombre" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Apellidos" formControlName="surname"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="DNI" formControlName="dni"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Nacionalidad" formControlName="nationality"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Dirección" formControlName="address"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Población" formControlName="poblacion"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Provincia" formControlName="provincia"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Comunidad" formControlName="comunidad"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input placeholder="Código postal" formControlName="zipcode"></ion-input>
+        </ion-item>
+        <ion-row>
+            <ion-button type="submit">Aceptar</ion-button>
+            <ion-button (click)="returnToHome()">Volver</ion-button>
+        </ion-row>
+    </form>
+</ion-content>

@@ -28,4 +28,8 @@ export class AutenticationService {
     getCurrentUser() {
         return this.fireAuth.auth.currentUser.email;
     }
+
+    getTokenId() {
+        return this.fireAuth.idToken;
+    }
 }

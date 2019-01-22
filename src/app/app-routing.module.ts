@@ -18,6 +18,10 @@ const routes: Routes = [
     {
         path: 'signup',
         loadChildren: './signup/signup.module#SignupPageModule'
+    },
+    {
+        path: 'qr-id-form',
+        loadChildren: './qr-id-form/qr-id-form.module#QrIdFormPageModule'
     }
 ];
 
