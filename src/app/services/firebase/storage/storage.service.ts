@@ -35,7 +35,7 @@ export class StorageService {
                         console.log(d.docs[0].data());
                         const data = d.docs[0].data()['qrId'];
                         console.log(data);
-                        if (data) {
+                        if (data != null) {
                             resolve(true);
                         } else {
                             resolve(false);

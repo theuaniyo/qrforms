@@ -17,7 +17,7 @@ export class HomePage {
     public category: any = '0';
     ntabs = 3;
     currentUser: any;
-    qrId: any = false;
+    qrId: boolean;
 
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
@@ -30,13 +30,13 @@ export class HomePage {
         this.fireAuth.isLogged().subscribe(isLogged => {
             if (isLogged) {
                 this.currentUser = this.getCurrentUser();
-                this.qrId = this.hasQrId();
+                this.hasQrId();
             } else {
                 this.router.navigate(['/login'])
                     .catch(reason => console.log(reason));
+                this.qrId = false;
             }
         });
-        // this.hasQrId();
     }
 
     /* Actualiza la categoría que esté en ese momento activa*/
@@ -70,6 +70,9 @@ export class HomePage {
     }
 
     hasQrId() {
-        return this.fireStorage.hasQrID(this.currentUser);
+        this.fireStorage.hasQrID(this.currentUser)
+            .then(value => {
+                this.qrId = value;
+            });
     }
 }
