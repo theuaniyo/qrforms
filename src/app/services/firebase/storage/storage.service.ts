@@ -51,7 +51,7 @@ export class StorageService {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
                 const docID = value.docs[0].ref.id;
-                resolve (this.firestore.doc('Users/' + docID).set({'qrId': data}));
+                resolve (this.firestore.doc('Users/' + docID).update({'qrId': data}));
             });
         });
     }
