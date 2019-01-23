@@ -47,8 +47,13 @@ export class StorageService {
         });
     }
 
-    createQrId(idToken, data) {
-        return this.firestore.doc('Users/' + idToken).set(data);
+    createQrId(currentUser, data): Promise<any> {
+        return new Promise((resolve) => {
+            this.getUserData(currentUser).then(value => {
+                const docID = value.docs[0].ref.id;
+                resolve (this.firestore.doc('Users/' + docID).set({'qrId': data}));
+            });
+        });
     }
 }
 
