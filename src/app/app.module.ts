@@ -13,6 +13,7 @@ import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AutenticationService} from './services/firebase/autentication/autentication.service';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {NgxQRCodeModule} from 'ngx-qrcode2';
 
 @NgModule({
     declarations: [AppComponent],
@@ -22,7 +23,8 @@ import {AngularFireAuth} from '@angular/fire/auth';
         IonicModule.forRoot(),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFirestoreModule
+        AngularFirestoreModule,
+        NgxQRCodeModule
     ],
     providers: [
         StatusBar,

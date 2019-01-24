@@ -22,8 +22,7 @@ const routes: Routes = [
     {
         path: 'qr-id-form',
         loadChildren: './qr-id-form/qr-id-form.module#QrIdFormPageModule'
-    },
-  { path: 'show-qr-code', loadChildren: './show-qr-code/show-qr-code.module#ShowQrCodePageModule' }
+    }
 ];
 
 @NgModule({

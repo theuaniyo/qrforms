@@ -1,9 +1,12 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>ShowQrCode</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>ShowQrCode</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+    <ion-card *ngIf="createdQr">
+        <ngx-qrcode [qrc-value]="createdQr"></ngx-qrcode>
+    </ion-card>
+    <ion-button (click)="closeModal()">Volver</ion-button>
 </ion-content>

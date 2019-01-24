@@ -49,9 +49,16 @@ export class StorageService {
 
     createQrId(currentUser, data): Promise<any> {
         return new Promise((resolve) => {
+            this.getDocId(currentUser).then(value => {
+                resolve(this.firestore.doc('Users/' + value).update({'qrId': data}));
+            });
+        });
+    }
+
+    getDocId(currentUser): Promise<any> {
+        return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
-                const docID = value.docs[0].ref.id;
-                resolve (this.firestore.doc('Users/' + docID).update({'qrId': data}));
+                resolve(value.docs[0].ref.id);
             });
         });
     }
