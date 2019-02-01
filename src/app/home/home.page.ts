@@ -4,6 +4,7 @@ import {AutenticationService} from '../services/firebase/autentication/autentica
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {ShowQrCodePage} from '../show-qr-code/show-qr-code.page';
+import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
 
 @Component({
     selector: 'app-home',
@@ -20,11 +21,14 @@ export class HomePage {
     currentUser: any;
     qrId: boolean;
     formID: any = [];
+    pendingForms: any[];
+    filledForms: any[];
 
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
                 private fireStorage: StorageService,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private qrScanner: QRScanner) {
     }
 
     ionViewDidEnter() {
@@ -35,6 +39,7 @@ export class HomePage {
                 if (isLogged) {
                     this.currentUser = this.getCurrentUser();
                     this.hasQrId();
+                    this.loadForms();
                 } else {
                     this.router.navigate(['/login'])
                         .catch(reason => console.log(reason));
@@ -88,7 +93,7 @@ export class HomePage {
     }
 
     showQrIdCode() {
-        this.fireStorage.getDocId(this.currentUser)
+        this.fireStorage.getUserDocId(this.currentUser)
             .then(value => {
                 this.formID = {
                     docId: value,
@@ -107,8 +112,22 @@ export class HomePage {
                 docId: data.docId,
                 tag: data.tag
             }
-
         });
         await modal.present();
+    }
+
+    async loadForms() {
+        this.fireStorage.loadPendingForms(this.currentUser)
+            .then(pending => {
+                console.log(pending);
+                this.pendingForms = pending;
+            })
+            .catch(reason => console.error(reason));
+        this.fireStorage.loadFilledForms(this.currentUser)
+            .then(filled => {
+                console.log(filled);
+                this.filledForms = filled;
+            })
+            .catch(reason => console.error(reason));
     }
 }

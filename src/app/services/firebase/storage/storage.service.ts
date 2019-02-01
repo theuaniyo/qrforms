@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, QuerySnapshot} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {environment} from '../../../../environments/environment';
 
 @Injectable({
@@ -9,7 +9,6 @@ export class StorageService {
 
     usersCollection: AngularFirestoreCollection<any>;
     formsCollection: AngularFirestoreCollection<any>;
-    data: any;
 
     constructor(private firestore: AngularFirestore) {
         this.usersCollection = firestore.collection<any>(environment.firebaseConfig.appUsers);
@@ -17,7 +16,7 @@ export class StorageService {
     }
 
     createUserStorage(email) {
-        const userData = {'email': email};
+        const userData = {'email': email, 'pending': '', 'filled': ''};
         return this.usersCollection.add(userData);
     }
 
@@ -49,16 +48,33 @@ export class StorageService {
 
     createQrId(currentUser, data): Promise<any> {
         return new Promise((resolve) => {
-            this.getDocId(currentUser).then(value => {
+            this.getUserDocId(currentUser).then(value => {
                 resolve(this.firestore.doc('Users/' + value).update({'qrId': data}));
             });
         });
     }
 
-    getDocId(currentUser): Promise<any> {
+    getUserDocId(currentUser): Promise<any> {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
                 resolve(value.docs[0].ref.id);
+            });
+        });
+    }
+
+    loadPendingForms(currentUser): Promise<any> {
+        return new Promise((resolve) => {
+            this.getUserData(currentUser).then(value => {
+                resolve(value.docs[0].data()['pending']);
+            });
+        });
+    }
+
+    loadFilledForms(currentUser): Promise<any> {
+        return new Promise((resolve) => {
+            this.getUserData(currentUser).then(value => {
+                const filled = value.docs[0].data()['filled'];
+                resolve(...filled);
             });
         });
     }

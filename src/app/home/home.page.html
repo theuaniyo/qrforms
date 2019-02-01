@@ -42,11 +42,18 @@
                         <ion-label *ngIf="!qrId" (click)="goToQrIdForm()">Pulsa para configurar tu QR ID</ion-label>
                     </ion-item>
                 </ion-list>
+                <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+                    <ion-fab-button>
+                        <ion-icon name="qr-scanner" [routerLink]="'/qr-scanner'"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
             </ion-content>
         </ion-slide>
         <ion-slide>
             <ion-content class="fixed-scroll">
-                <h1>Slide two</h1>
+                <ion-item *ngFor="let form of pendingForms">
+                    <ion-label>{{form.title}}</ion-label>
+                </ion-item>
             </ion-content>
         </ion-slide>
         <ion-slide>

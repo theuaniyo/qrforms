@@ -14,6 +14,10 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AutenticationService} from './services/firebase/autentication/autentication.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
+import {QRScanner} from '@ionic-native/qr-scanner/ngx';
+import {Dialogs} from '@ionic-native/dialogs/ngx';
+import {Vibration} from '@ionic-native/vibration/ngx';
+import {NativeStorage} from '@ionic-native/native-storage/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,7 +35,11 @@ import {NgxQRCodeModule} from 'ngx-qrcode2';
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         AutenticationService,
-        AngularFireAuth
+        AngularFireAuth,
+        QRScanner,
+        Dialogs,
+        Vibration,
+        NativeStorage
     ],
     bootstrap: [AppComponent]
 })

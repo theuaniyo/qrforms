@@ -22,6 +22,10 @@ const routes: Routes = [
     {
         path: 'qr-id-form',
         loadChildren: './qr-id-form/qr-id-form.module#QrIdFormPageModule'
+    },
+    {
+        path: 'qr-scanner',
+        loadChildren: './qr-scanner/qr-scanner.module#QrScannerPageModule'
     }
 ];
 
