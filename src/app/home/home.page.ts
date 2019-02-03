@@ -111,28 +111,51 @@ export class HomePage {
             .catch(reason => console.log(reason));
     }
 
-    showQrIdCode() {
+    showQrCode(type, index) {
         this.fireStorage.getUserDocId(this.currentUser)
-            .then(value => {
-                this.formID = {
-                    docId: value,
-                    tag: 'qrId'
-                };
+            .then(docId => {
+                if (type == 'qrID') {
+                    this.formID = {
+                        type: 'qrID',
+                        docId: docId,
+                        tag: 'qrId'
+                    };
+                } else if (type == 'form') {
+                    this.formID = {
+                        type: 'form',
+                        docId: docId,
+                        index: index
+                    };
+                }
+                this.presentQrIdModal(this.formID)
+                    .catch(reason => console.log(reason));
             });
-        this.presentQrIdModal(this.formID)
-            .then(value => console.log(value))
-            .catch(reason => console.log(reason));
     }
 
     async presentQrIdModal(data) {
-        const modal = await this.modalController.create({
-            component: ShowQrCodePage,
-            componentProps: {
-                docId: data.docId,
-                tag: data.tag
-            }
-        });
-        await modal.present();
+        if (data.type == 'qrID') {
+            console.log('Mostrando QR ID');
+            const modal = await this.modalController.create({
+                component: ShowQrCodePage,
+                componentProps: {
+                    type: data.type,
+                    docId: data.docId,
+                    tag: data.tag
+                }
+            });
+            await modal.present();
+        } else if (data.type == 'form') {
+            console.log('Mostrando formulario');
+            const modal = await this.modalController.create({
+                component: ShowQrCodePage,
+                componentProps: {
+                    type: data.type,
+                    docId: data.docId,
+                    index: data.index
+                }
+            });
+            await modal.present();
+        }
     }
 
     loadPendingForms() {
