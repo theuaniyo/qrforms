@@ -41,6 +41,9 @@
                         <ion-label *ngIf="qrId" (click)="showQrIdCode()">Mi QR ID</ion-label>
                         <ion-label *ngIf="!qrId" (click)="goToQrIdForm()">Pulsa para configurar tu QR ID</ion-label>
                     </ion-item>
+                    <ion-item *ngFor="let form of filledForms">
+                        <ion-label>{{form.title}}</ion-label>
+                    </ion-item>
                 </ion-list>
                 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
                     <ion-fab-button>
@@ -51,8 +54,8 @@
         </ion-slide>
         <ion-slide>
             <ion-content class="fixed-scroll">
-                <ion-item *ngFor="let form of pendingForms">
-                    <ion-label>{{form.title}}</ion-label>
+                <ion-item *ngFor="let form of pendingForms; let i = index">
+                    <ion-label (click)="openFillForm(i)">{{form.title}}</ion-label>
                 </ion-item>
             </ion-content>
         </ion-slide>

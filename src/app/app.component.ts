@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {Platform} from '@ionic/angular';
+import {MenuController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AutenticationService} from './services/firebase/autentication/autentication.service';
@@ -20,14 +20,13 @@ export class AppComponent {
         }
     ];
 
-    constructor(
-        private platform: Platform,
-        private splashScreen: SplashScreen,
-        private statusBar: StatusBar,
-        private firebaseAuth: AutenticationService,
-        private router: Router,
-        private nativeStorage: NativeStorage
-    ) {
+    constructor(private platform: Platform,
+                private splashScreen: SplashScreen,
+                private statusBar: StatusBar,
+                private firebaseAuth: AutenticationService,
+                private router: Router,
+                private nativeStorage: NativeStorage,
+                private menuController: MenuController) {
         this.initializeApp();
     }
 
@@ -43,8 +42,10 @@ export class AppComponent {
             .then(() => {
                 this.nativeStorage.remove('idToken')
                     .then(() => {
-                        this.router.navigate(['/login'])
-                            .catch(reason => console.log(reason));
+                        this.menuController.close().then(() => {
+                            this.router.navigate(['/login'])
+                                .catch(reason => console.log(reason));
+                        });
                     });
             })
             .catch(reason => console.log(reason));

@@ -25,8 +25,10 @@ export class AutenticationService {
         return this.fireAuth.authState;
     }
 
-    getCurrentUser() {
-        return this.fireAuth.auth.currentUser.email;
+    getCurrentUser(): Promise<string> {
+        return new Promise(resolve => {
+            resolve(this.fireAuth.auth.currentUser.email);
+        });
     }
 
     getTokenId() {

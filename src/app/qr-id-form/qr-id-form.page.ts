@@ -43,7 +43,10 @@ export class QrIdFormPage implements OnInit {
     onSubmit() {
         this.data = this.saveUserData();
         this.fireStorage.createQrId(this.fireAuth.getCurrentUser(), this.data)
-            .then(value => console.log(value))
+            .then(value => {
+                console.log(value);
+                this.router.navigate(['/home']);
+            })
             .catch(reason => console.log(reason));
     }
 

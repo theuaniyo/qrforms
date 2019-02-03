@@ -18,17 +18,21 @@ import {QRScanner} from '@ionic-native/qr-scanner/ngx';
 import {Dialogs} from '@ionic-native/dialogs/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
 import {NativeStorage} from '@ionic-native/native-storage/ngx';
+import { FillFormComponent } from './fill-form/fill-form.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
-    declarations: [AppComponent],
-    entryComponents: [],
+    declarations: [AppComponent, FillFormComponent],
+    entryComponents: [FillFormComponent],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFirestoreModule,
-        NgxQRCodeModule
+        NgxQRCodeModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         StatusBar,

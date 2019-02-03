@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="filledForm" (ngSubmit)="onSubmit()">
+    <ion-item *ngFor="let field of fields">
+      <ion-input placeholder="{{field}}" formControlName="{{field}}"></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-button type="submit">Aceptar</ion-button>
+      <ion-button (click)="closeModal()">Volver</ion-button>
+    </ion-row>
+  </form>
+</ion-content>

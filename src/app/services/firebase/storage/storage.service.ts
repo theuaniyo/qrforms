@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {environment} from '../../../../environments/environment';
+import {AutenticationService} from '../autentication/autentication.service';
+import * as firebase from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'
@@ -10,13 +12,14 @@ export class StorageService {
     usersCollection: AngularFirestoreCollection<any>;
     formsCollection: AngularFirestoreCollection<any>;
 
-    constructor(private firestore: AngularFirestore) {
+    constructor(private firestore: AngularFirestore,
+                private fireAuth: AutenticationService) {
         this.usersCollection = firestore.collection<any>(environment.firebaseConfig.appUsers);
         this.formsCollection = firestore.collection<any>(environment.firebaseConfig.appForms);
     }
 
     createUserStorage(email) {
-        const userData = {'email': email, 'pending': '', 'filled': ''};
+        const userData = {'email': email, 'pending': [], 'filled': []};
         return this.usersCollection.add(userData);
     }
 
@@ -28,12 +31,8 @@ export class StorageService {
         return new Promise((resolve) => {
             this.getUserData(currentUser)
                 .then((d) => {
-                    // console.log(d.docs);
                     if (d.docs.length > 0) {
-                        // console.log(d.docs[0]);
-                        // console.log(d.docs[0].data());
                         const data = d.docs[0].data()['qrId'];
-                        // console.log(data);
                         if (data != null) {
                             resolve(true);
                         } else {
@@ -73,9 +72,34 @@ export class StorageService {
     loadFilledForms(currentUser): Promise<any> {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
-                const filled = value.docs[0].data()['filled'];
-                resolve(...filled);
+                resolve(value.docs[0].data()['filled']);
             });
+        });
+    }
+
+    fillForm(data: any[]): Promise<any> {
+        return new Promise(resolve => {
+            this.fireAuth.getCurrentUser().then(email => {
+                this.usersCollection.ref.where('email', '==', email).get()
+                    .then(userData => {
+                        resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'filled': data}));
+                    });
+            });
+        });
+    }
+
+    updatePendingForms(data: any[]): Promise<any> {
+        return new Promise(resolve => {
+            this.fireAuth.getCurrentUser()
+                .then(email => {
+                    this.usersCollection.ref.where('email', '==', email).get()
+                        .then(userData => {
+                            this.firestore.doc('Users/' + userData.docs[0].id).update({pending: firebase.firestore.FieldValue.delete()})
+                                .then(() => {
+                                    resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'pending': data}));
+                                });
+                        });
+                });
         });
     }
 }
