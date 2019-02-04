@@ -74,4 +74,19 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  ion-app {
+    opacity: 1;
+    background: var(--ion-background-color) !important;
+  }
+
+  ion-app.cameraView {
+    opacity: 0
+  }
+
+  ion-app.cameraView {
+    background: transparent !important;
+    background-size: 100% 100% !important;
+  }
+
 }

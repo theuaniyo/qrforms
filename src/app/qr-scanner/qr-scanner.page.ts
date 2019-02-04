@@ -1,7 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
 import {Dialogs} from '@ionic-native/dialogs/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-qr-scanner',
@@ -14,14 +15,11 @@ export class QrScannerPage implements OnInit, OnDestroy {
     scanSub: any;
 
     constructor(private qrScanner: QRScanner,
-                private dialogs: Dialogs,
-                private vibration: Vibration) {
-    }
-
-    ngOnInit() {
+                private router: Router) {
     }
 
     ionViewWillLeave() {
+        // Es llamado cuando realizamos una navegación porque ya hemos escaneado el QR
         window.document.querySelector('ion-app').classList.remove('cameraView');
         this.qrScanner.hide().then(() => {
             this.qrScanner.destroy();
@@ -29,24 +27,28 @@ export class QrScannerPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        // Es llamado cuando salimos de la página pulsando el botón atrás.
         window.document.querySelector('ion-app').classList.remove('cameraView');
         this.qrScanner.hide().then(() => {
             this.qrScanner.destroy();
-        }); // hide camera preview
+        });
+    }
+
+    ngOnInit() {
     }
 
     ionViewWillEnter() {
-        this.data = null;
         this.qrScanner.prepare()
             .then((status: QRScannerStatus) => {
+                // Cámara preparada
                 if (status.authorized) {
-                    this.qrScanner.show();
-                    window.document.querySelector('ion-app').classList.add('cameraView');
-                    this.scanSub = this.qrScanner.scan().subscribe(value => {
-                        this.data = JSON.stringify(value);
-
+                    this.qrScanner.show();  // Mostramos cámara
+                    window.document.querySelector('ion-app').classList.add('cameraView');  // ocultamos vista de la app
+                    this.scanSub = this.qrScanner.scan().subscribe((d) => {
+                        console.log('Read something: ', d);  // Hemos leído un QR y vamos a analizarlo
                     });
                 } else if (status.denied) {
+                    /* No hay permisos, abrimos configuración de permisos*/
                     console.log('denied');
                     this.qrScanner.openSettings();
                 } else {
@@ -55,5 +57,34 @@ export class QrScannerPage implements OnInit, OnDestroy {
                 }
             })
             .catch((e: any) => console.log('Error is', e));
+    }
+
+    pauseQR() {
+        this.qrScanner.hide();
+        this.qrScanner.pausePreview();
+        window.document.querySelector('ion-app').classList.remove('cameraView');
+    }
+
+    resumeQR() {
+        this.qrScanner.show();
+        this.qrScanner.resumePreview();
+        this.scanSub = this.qrScanner.scan().subscribe((d) => {
+            console.log('Read something', d);
+        });
+        window.document.querySelector('ion-app').classList.add('cameraView');
+    }
+
+    closeQR() {
+        window.document.querySelector('ion-app').classList.remove('cameraView');
+        this.qrScanner.hide().then(() => {
+            this.qrScanner.destroy();
+        });
+        this.scanSub.unsubscribe(); // stop scanning
+    }
+
+    returnToHomePage() {
+        this.router.navigate(['/home'])
+            .then(() => console.log('Leaving QR Scanner'));
+        this.qrScanner.destroy();
     }
 }

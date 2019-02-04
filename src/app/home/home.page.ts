@@ -31,7 +31,6 @@ export class HomePage {
                 private router: Router,
                 private fireStorage: StorageService,
                 private modalController: ModalController,
-                private qrScanner: QRScanner,
                 private nativeStorage: NativeStorage) {
     }
 
@@ -44,25 +43,29 @@ export class HomePage {
                     this.getCurrentUser().then(email => {
                         this.currentUser = email;
                         this.hasQrId();
-                        this.loadPendingForms()
-                            .then(pending => {
-                                this.pendingForms = pending;
-                                if (this.pendingForms.length === 0) {
-                                    console.log('Pending forms empty!');
-                                }
-                            });
-                        this.loadFilledForms()
-                            .then(filled => {
-                                this.filledForms = filled;
-                                if (this.filledForms.length === 0) {
-                                    console.log('Filled forms empty!');
-                                }
-                            });
+                        this.refreshForms();
                     });
                 } else {
                     this.router.navigate(['/login'])
                         .catch(reason => console.log(reason));
                     this.qrId = false;
+                }
+            });
+    }
+
+    refreshForms() {
+        this.loadPendingForms()
+            .then(pending => {
+                this.pendingForms = pending;
+                if (this.pendingForms.length === 0) {
+                    console.log('Pending forms empty!');
+                }
+            });
+        this.loadFilledForms()
+            .then(filled => {
+                this.filledForms = filled;
+                if (this.filledForms.length === 0) {
+                    console.log('Filled forms empty!');
                 }
             });
     }
@@ -174,47 +177,32 @@ export class HomePage {
             .catch(reason => console.error(reason));
     }
 
-    async presentFillFormModal(form) {
+    async presentFillFormModal(form, index) {
         const modal = await this.modalController.create({
             component: FillFormComponent,
             componentProps: {
                 title: form.title,
-                fields: form.fields
+                fields: form.fields,
+                index: index
             }
         });
         await modal.present();
         await modal.onDidDismiss()
             .then(() => {
-                this.getCurrentUser()
-                    .then(email => {
-                        console.log(email);
-                        this.currentUser = email;
-                        this.loadPendingForms()
-                            .then(pending => {
-                                console.log(pending);
-                                this.pendingForms = pending;
-                                console.log(this.pendingForms);
-                                this.nativeStorage.getItem('fillingFormIndex')
-                                    .then(index => {
-                                        this.pendingForms.splice(index, 1);
-                                        console.log(this.pendingForms);
-                                        this.fireStorage.updatePendingForms(this.pendingForms)
-                                            .then(() => {
-                                                console.log('Pending forms updated');
-                                            });
-                                    });
-                            });
-                    });
+                this.refreshForms();
             });
     }
 
     openFillForm(index: number) {
-        this.presentFillFormModal(this.pendingForms[index])
+        this.presentFillFormModal(this.pendingForms[index], index)
             .then(() => {
-                this.nativeStorage.setItem('fillingFormIndex', index)
-                    .catch(reason => console.error(reason));
                 console.log('Opening fill form modal');
             })
             .catch(reason => console.error(reason));
+    }
+
+    openQrScanner() {
+        this.router.navigate(['/qr-scanner'])
+            .then(() => console.log('Opening QR Scanner'));
     }
 }

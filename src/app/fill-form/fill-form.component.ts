@@ -3,6 +3,7 @@ import {ModalController, NavParams} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {StorageService} from '../services/firebase/storage/storage.service';
+import {AutenticationService} from '../services/firebase/autentication/autentication.service';
 
 @Component({
     selector: 'app-fill-form',
@@ -20,7 +21,8 @@ export class FillFormComponent implements OnInit {
                 private navParams: NavParams,
                 private router: Router,
                 private formBuilder: FormBuilder,
-                private fireStorage: StorageService) {
+                private fireStorage: StorageService,
+                private fireAuth: AutenticationService) {
     }
 
     ngOnInit() {
@@ -44,7 +46,19 @@ export class FillFormComponent implements OnInit {
         this.fireStorage.fillForm(this.formData)
             .then(() => {
                 console.log('Filled forms updated.');
-                this.closeModal();
+                this.fireAuth.getCurrentUser().then(email => {
+                    console.log(email);
+                    this.fireStorage.loadPendingForms(email).then(pending => {
+                        console.log(pending);
+                        const pendingForms: any[] = pending;
+                        pendingForms.splice(this.navParams.get('index'), 1);
+                        console.log(pendingForms);
+                        this.fireStorage.updatePendingForms(pendingForms).then(() => {
+                            console.log('Pending forms updated');
+                            this.closeModal();
+                        });
+                    });
+                });
             })
             .catch(reason => {
                 console.log('Error updating filled forms.');

@@ -82,7 +82,13 @@ export class StorageService {
             this.fireAuth.getCurrentUser().then(email => {
                 this.usersCollection.ref.where('email', '==', email).get()
                     .then(userData => {
-                        resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'filled': data}));
+                        this.loadFilledForms(email).then(filled => {
+                            const filledForms: any[] = filled;
+                            console.log(filledForms);
+                            filledForms.push(...data);
+                            console.log(filledForms);
+                            resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'filled': filledForms}));
+                        });
                     });
             });
         });
@@ -94,10 +100,7 @@ export class StorageService {
                 .then(email => {
                     this.usersCollection.ref.where('email', '==', email).get()
                         .then(userData => {
-                            this.firestore.doc('Users/' + userData.docs[0].id).update({pending: firebase.firestore.FieldValue.delete()})
-                                .then(() => {
-                                    resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'pending': data}));
-                                });
+                            resolve(this.firestore.doc('Users/' + userData.docs[0].id).ref.update({'pending': data}));
                         });
                 });
         });
