@@ -32,7 +32,7 @@ export class QrScannerPage implements OnInit, OnDestroy {
         // Es llamado cuando salimos de la página pulsando el botón atrás.
         window.document.querySelector('ion-app').classList.remove('cameraView');
         this.qrScanner.hide().then(() => {
-            this.qrScanner.destroy();
+            this.qrScanner.destroy().then(() => console.log('Destroying QR Scanner'));
         });
     }
 
@@ -53,7 +53,7 @@ export class QrScannerPage implements OnInit, OnDestroy {
                                 console.log('Form added');
                                 this.router.navigate(['/home'])
                                     .then(() => {
-
+                                        console.log('Returning to home page');
                                     });
                             } else {
                                 console.log('Failed to add form');

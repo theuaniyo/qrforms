@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {environment} from '../../../../environments/environment';
 import {AutenticationService} from '../autentication/autentication.service';
-import * as firebase from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'
@@ -108,22 +107,37 @@ export class StorageService {
 
     addForm(data): Promise<boolean> {
         return new Promise(resolve => {
-            this.fireAuth.getCurrentUser().then(email => {
-                this.loadPendingForms(email).then(filled => {
-                    const filledForms: any[] = filled;
-                    filledForms.push(data);
-                    this.getUserDocId(email).then(docId => {
-                        this.firestore.doc('Users/' + docId).ref.update({'pending': filledForms})
-                            .then(() => {
-                                resolve(true);
-                            })
-                            .catch(reason => {
-                                console.error(reason);
-                                resolve(false);
-                            });
-                    });
+            this.fireAuth.getCurrentUser()
+                .then(email => {
+                    this.loadPendingForms(email)
+                        .then(pending => {
+                            const pendingForms: any[] = pending;
+                            pendingForms.push(JSON.parse(data));
+                            this.getUserDocId(email)
+                                .then(docId => {
+                                    this.firestore.doc('Users/' + docId).ref.update({'pending': pendingForms})
+                                        .then(() => {
+                                            resolve(true);
+                                        })
+                                        .catch(reason => {
+                                            console.error(reason);
+                                            resolve(false);
+                                        });
+                                })
+                                .catch(reason => {
+                                    console.error(reason);
+                                    resolve(false);
+                                });
+                        })
+                        .catch(reason => {
+                            console.error(reason);
+                            resolve(false);
+                        });
+                })
+                .catch(reason => {
+                    console.error(reason);
+                    resolve(false);
                 });
-            });
         });
     }
 }
