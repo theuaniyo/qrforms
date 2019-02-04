@@ -3,6 +3,7 @@ import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
 import {Dialogs} from '@ionic-native/dialogs/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
 import {Router} from '@angular/router';
+import {StorageService} from '../services/firebase/storage/storage.service';
 
 @Component({
     selector: 'app-qr-scanner',
@@ -15,7 +16,8 @@ export class QrScannerPage implements OnInit, OnDestroy {
     scanSub: any;
 
     constructor(private qrScanner: QRScanner,
-                private router: Router) {
+                private router: Router,
+                private fireStorage: StorageService) {
     }
 
     ionViewWillLeave() {
@@ -46,6 +48,17 @@ export class QrScannerPage implements OnInit, OnDestroy {
                     window.document.querySelector('ion-app').classList.add('cameraView');  // ocultamos vista de la app
                     this.scanSub = this.qrScanner.scan().subscribe((d) => {
                         console.log('Read something: ', d);  // Hemos leído un QR y vamos a analizarlo
+                        this.readQrCode(d).then(result => {
+                            if (result) {
+                                console.log('Form added');
+                                this.router.navigate(['/home'])
+                                    .then(() => {
+
+                                    });
+                            } else {
+                                console.log('Failed to add form');
+                            }
+                        });
                     });
                 } else if (status.denied) {
                     /* No hay permisos, abrimos configuración de permisos*/
@@ -84,7 +97,13 @@ export class QrScannerPage implements OnInit, OnDestroy {
 
     returnToHomePage() {
         this.router.navigate(['/home'])
-            .then(() => console.log('Leaving QR Scanner'));
-        this.qrScanner.destroy();
+            .then(() => {
+                console.log('Leaving QR Scanner');
+                this.qrScanner.destroy();
+            });
+    }
+
+    readQrCode(data) {
+        return this.fireStorage.addForm(data);
     }
 }

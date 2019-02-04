@@ -105,5 +105,26 @@ export class StorageService {
                 });
         });
     }
+
+    addForm(data): Promise<boolean> {
+        return new Promise(resolve => {
+            this.fireAuth.getCurrentUser().then(email => {
+                this.loadPendingForms(email).then(filled => {
+                    const filledForms: any[] = filled;
+                    filledForms.push(data);
+                    this.getUserDocId(email).then(docId => {
+                        this.firestore.doc('Users/' + docId).ref.update({'pending': filledForms})
+                            .then(() => {
+                                resolve(true);
+                            })
+                            .catch(reason => {
+                                console.error(reason);
+                                resolve(false);
+                            });
+                    });
+                });
+            });
+        });
+    }
 }
 
