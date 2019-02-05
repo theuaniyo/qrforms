@@ -1,10 +1,11 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
         <ion-title>Registro</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+    <ion-img src="../assets/brand-logo.svg"></ion-img>
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
         <ion-item>
             <ion-input placeholder="E-mail" type="text" formControlName="email" clearInput></ion-input>
@@ -15,13 +16,18 @@
         <ion-item>
             <ion-input placeholder="Repite la contraseña" type="password" formControlName="repeatPassword" clearInput></ion-input>
         </ion-item>
-        <ion-row>
-            <ion-button color="primary" type="submit" [disabled]="!signUpForm.valid || buttonPressed">Regístrate</ion-button>
+        <ion-row padding-top="10">
+            <ion-col size="12" align="center">
+                <ion-button color="primary" type="submit" [disabled]="!signUpForm.valid || buttonPressed">Regístrate</ion-button>
+            </ion-col>
         </ion-row>
     </form>
-    <ion-row>
-        <ion-label color="primary">¿Ya tienes cuenta?
-            <ion-button [routerLink]="'/login'">Inicia sesión</ion-button>
-        </ion-label>
+    <ion-row align-items-center="" padding-top="10">
+        <ion-col size="6">
+            <ion-label><strong>¿Ya tienes cuenta?</strong></ion-label>
+        </ion-col>
+        <ion-col size="6">
+            <ion-button [routerLink]="'/login'" shape="round" size="small" fill="clear">Inicia sesión</ion-button>
+        </ion-col>
     </ion-row>
 </ion-content>

@@ -15,7 +15,7 @@ export class HomePage {
     @ViewChild('SwipedTabsSlider') SwipedTabsSlider: IonSlides;
 
     SwipedTabsIndicator: any = null;
-    tabs = ['selectTab(0)', 'selectTab(1)', 'selectTab(2)'];
+    tabs = ['selectTab(0)', 'selectTab(1)'];
     public category: any = '0';
     ntabs = 2;
     currentUser: any;
@@ -23,6 +23,8 @@ export class HomePage {
     formID: any;
     pendingForms: any[];
     filledForms: any[];
+    filteredFilled: any[];
+    filteredPending: any[];
 
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
@@ -103,6 +105,7 @@ export class HomePage {
                             if (this.filledForms.length === 0) {
                                 console.log('Filled forms empty!');
                             }
+                            this.initializeItems();
                             resolve(true);
                         })
                         .catch(reason => {
@@ -283,5 +286,36 @@ export class HomePage {
             animated: true
         });
         toast.present();
+    }
+
+    initializeItems() {
+        this.filteredFilled = this.filledForms;
+        this.filteredPending = this.pendingForms;
+    }
+
+    async getFilteredFilled($event) {
+        this.initializeItems();
+        // set val to the value of the searchbar
+        const val = $event.target.value;
+
+        // if the value is an empty string don't filter the items
+        if (val && val.trim() !== '') {
+            this.filteredFilled = this.filledForms.filter((item) => {
+                return (item.title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            });
+        }
+    }
+
+    async getFilteredPending($event) {
+        this.initializeItems();
+        // set val to the value of the searchbar
+        const val = $event.target.value;
+
+        // if the value is an empty string don't filter the items
+        if (val && val.trim() !== '') {
+            this.filteredPending = this.pendingForms.filter((item) => {
+                return (item.title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            });
+        }
     }
 }

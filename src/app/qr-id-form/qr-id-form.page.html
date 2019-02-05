@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
         <ion-title>QrIdForm</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -33,9 +33,13 @@
         <ion-item>
             <ion-input placeholder="Código postal" formControlName="zipcode"></ion-input>
         </ion-item>
-        <ion-row>
-            <ion-button type="submit" [disabled]="!qrIdForm.valid">Aceptar</ion-button>
-            <ion-button (click)="returnToHome()">Volver</ion-button>
+        <ion-row align-items-center="" padding-top="10">
+            <ion-col size="6" align="center">
+                <ion-button type="submit" [disabled]="!qrIdForm.valid">Aceptar</ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="returnToHome()">Volver</ion-button>
+            </ion-col>
         </ion-row>
     </form>
 </ion-content>
