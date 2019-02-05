@@ -7,13 +7,13 @@
 <ion-content padding>
     <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
         <ion-item>
-            <ion-input placeholder="E-mail" type="text" formControlName="email"></ion-input>
+            <ion-input placeholder="E-mail" type="text" formControlName="email" clearInput></ion-input>
         </ion-item>
         <ion-item>
-            <ion-input placeholder="Contraseña" type="password" formControlName="password"></ion-input>
+            <ion-input placeholder="Contraseña" type="password" formControlName="password" clearInput></ion-input>
         </ion-item>
         <ion-row>
-            <ion-button color="primary" type="submit">Iniciar sesión</ion-button>
+            <ion-button color="primary" type="submit" [disabled]="!logInForm.valid || buttonPressed">Iniciar sesión</ion-button>
         </ion-row>
     </form>
     <ion-row>

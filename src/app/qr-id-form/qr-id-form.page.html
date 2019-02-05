@@ -34,7 +34,7 @@
             <ion-input placeholder="Código postal" formControlName="zipcode"></ion-input>
         </ion-item>
         <ion-row>
-            <ion-button type="submit">Aceptar</ion-button>
+            <ion-button type="submit" [disabled]="!qrIdForm.valid">Aceptar</ion-button>
             <ion-button (click)="returnToHome()">Volver</ion-button>
         </ion-row>
     </form>

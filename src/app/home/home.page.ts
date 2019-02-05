@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonSlides, ModalController} from '@ionic/angular';
+import {IonSlides, LoadingController, MenuController, ModalController, ToastController} from '@ionic/angular';
 import {AutenticationService} from '../services/firebase/autentication/autentication.service';
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
@@ -27,43 +27,94 @@ export class HomePage {
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
                 private fireStorage: StorageService,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private menuCtrl: MenuController,
+                private loadingController: LoadingController,
+                private toast: ToastController) {
     }
 
     ionViewDidEnter() {
+        this.menuCtrl.enable(true);
         this.SwipedTabsIndicator = document.getElementById('indicator');
-        // PARA QUE CUANDO RECARGUE EL EMULADOR DEL MÓVIL VUELVA A LA PÁGINA DE LOGIN ¿CÓMO SE MANTIENE LA SESIÓN INICIADA?
-        this.fireAuth.isLogged()
-            .then(isLogged => {
-                if (isLogged) {
-                    this.getCurrentUser().then(email => {
-                        this.currentUser = email;
-                        this.hasQrId();
-                        this.refreshForms();
+        this.presentLoading()
+            .then(() => {
+                this.fireAuth.isLogged()
+                    .then(isLogged => {
+                        if (isLogged) {
+                            this.getCurrentUser()
+                                .then(email => {
+                                    this.currentUser = email;
+                                    this.hasQrId()
+                                        .then(hasQrId => {
+                                            this.qrId = hasQrId;
+                                            this.refreshForms()
+                                                .then(dataLoaded => {
+                                                    if (!dataLoaded) {
+                                                        this.presentToast('Error al cargar los datos');
+                                                        this.loadingController.dismiss();
+                                                    } else {
+                                                        this.loadingController.dismiss();
+                                                    }
+                                                })
+                                                .catch(reason => {
+                                                    console.log(reason);
+                                                    this.presentToast('Error al cargar los datos');
+                                                    this.loadingController.dismiss();
+                                                });
+                                        })
+                                        .catch(reason => {
+                                            console.log(reason);
+                                            this.presentToast('Error al cargar los datos');
+                                            this.loadingController.dismiss();
+                                        });
+                                })
+                                .catch(reason => {
+                                    console.log(reason);
+                                    this.presentToast('Error inesperado')
+                                        .then(() => {
+                                            this.fireAuth.logOut().then(() => {
+                                                this.router.navigate(['/login'])
+                                                    .then(() => this.loadingController.dismiss());
+                                            }).catch(() => {
+                                                this.router.navigate(['/login'])
+                                                    .then(() => this.loadingController.dismiss());
+                                            });
+                                        });
+                                });
+                        } else {
+                            this.router.navigate(['/login'])
+                                .then(() => this.loadingController.dismiss());
+                        }
                     });
-                } else {
-                    this.router.navigate(['/login'])
-                        .catch(reason => console.log(reason));
-                    this.qrId = false;
-                }
             });
     }
 
-    refreshForms() {
-        this.loadPendingForms()
-            .then(pending => {
-                this.pendingForms = pending;
-                if (this.pendingForms.length === 0) {
-                    console.log('Pending forms empty!');
-                }
-            });
-        this.loadFilledForms()
-            .then(filled => {
-                this.filledForms = filled;
-                if (this.filledForms.length === 0) {
-                    console.log('Filled forms empty!');
-                }
-            });
+    refreshForms(): Promise<boolean> {
+        return new Promise(resolve => {
+            this.loadPendingForms()
+                .then(pending => {
+                    this.pendingForms = pending;
+                    if (this.pendingForms.length === 0) {
+                        console.log('Pending forms empty!');
+                    }
+                    this.loadFilledForms()
+                        .then(filled => {
+                            this.filledForms = filled;
+                            if (this.filledForms.length === 0) {
+                                console.log('Filled forms empty!');
+                            }
+                            resolve(true);
+                        })
+                        .catch(reason => {
+                            console.log(reason);
+                            resolve(false);
+                        });
+                })
+                .catch(reason => {
+                    console.log(reason);
+                    resolve(false);
+                });
+        });
     }
 
     /* Actualiza la categoría que esté en ese momento activa*/
@@ -98,10 +149,7 @@ export class HomePage {
     }
 
     hasQrId() {
-        this.fireStorage.hasQrID(this.currentUser)
-            .then(value => {
-                this.qrId = value;
-            });
+        return this.fireStorage.hasQrID(this.currentUser);
     }
 
     goToQrIdForm() {
@@ -126,8 +174,16 @@ export class HomePage {
                         index: index
                     };
                 }
-                this.presentQrIdModal(this.formID)
-                    .catch(reason => console.log(reason));
+                this.presentLoading().then(() => {
+                    this.presentQrIdModal(this.formID)
+                        .then(() => {
+                            this.loadingController.dismiss();
+                        })
+                        .catch(reason => {
+                            console.log(reason);
+                            this.loadingController.dismiss();
+                        });
+                });
             });
     }
 
@@ -206,5 +262,22 @@ export class HomePage {
     openQrScanner() {
         this.router.navigate(['/qr-scanner'])
             .then(() => console.log('Opening QR Scanner'));
+    }
+
+    async presentLoading() {
+        const loading = await this.loadingController.create({
+            message: 'Cargando',
+            spinner: 'crescent'
+        });
+        return await loading.present();
+    }
+
+    async presentToast(msg) {
+        const toast = await this.toast.create({
+            message: msg,
+            duration: 2000,
+            animated: true
+        });
+        toast.present();
     }
 }

@@ -16,7 +16,7 @@
             <ion-input placeholder="Repite la contraseña" type="password" formControlName="repeatPassword" clearInput></ion-input>
         </ion-item>
         <ion-row>
-            <ion-button color="primary" type="submit">Regístrate</ion-button>
+            <ion-button color="primary" type="submit" [disabled]="!signUpForm.valid || buttonPressed">Regístrate</ion-button>
         </ion-row>
     </form>
     <ion-row>

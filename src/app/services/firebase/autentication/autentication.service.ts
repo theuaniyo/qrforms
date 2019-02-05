@@ -24,6 +24,7 @@ export class AutenticationService {
     isLogged(): Promise<boolean> {
         return new Promise(resolve => {
             this.fireAuth.authState.subscribe(authState => {
+                console.log(authState);
                 if (authState) {
                     resolve(true);
                 } else {

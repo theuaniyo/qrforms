@@ -23,7 +23,6 @@ export class StorageService {
     }
 
     getUserData(currentUser) {
-        console.log(currentUser);
         return this.usersCollection.ref.where('email', '==', currentUser).get();
     }
 
