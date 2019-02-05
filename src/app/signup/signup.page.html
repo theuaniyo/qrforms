@@ -7,16 +7,14 @@
 <ion-content padding>
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
         <ion-item>
-            <ion-input placeholder="E-mail" type="text" formControlName="email"></ion-input>
+            <ion-input placeholder="E-mail" type="text" formControlName="email" clearInput></ion-input>
         </ion-item>
         <ion-item>
-            <ion-input placeholder="Contraseña" type="password" formControlName="password"></ion-input>
+            <ion-input placeholder="Contraseña" type="password" formControlName="password" clearInput></ion-input>
         </ion-item>
-        <!--
         <ion-item>
-            <ion-input placeholder="Repite la contraseña" type="password"></ion-input>
+            <ion-input placeholder="Repite la contraseña" type="password" formControlName="repeatPassword" clearInput></ion-input>
         </ion-item>
-        -->
         <ion-row>
             <ion-button color="primary" type="submit">Regístrate</ion-button>
         </ion-row>

@@ -21,21 +21,21 @@ export class AutenticationService {
         return this.fireAuth.auth.signOut();
     }
 
-    isLogged() {
-        return this.fireAuth.authState;
+    isLogged(): Promise<boolean> {
+        return new Promise(resolve => {
+            this.fireAuth.authState.subscribe(authState => {
+                if (authState) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
     }
 
     getCurrentUser(): Promise<string> {
         return new Promise(resolve => {
             resolve(this.fireAuth.auth.currentUser.email);
         });
-    }
-
-    getTokenId() {
-        return this.fireAuth.auth.currentUser.getIdToken();
-    }
-
-    authWithIdToken() {
-
     }
 }

@@ -23,6 +23,7 @@ export class StorageService {
     }
 
     getUserData(currentUser) {
+        console.log(currentUser);
         return this.usersCollection.ref.where('email', '==', currentUser).get();
     }
 
@@ -137,6 +138,15 @@ export class StorageService {
                 .catch(reason => {
                     console.error(reason);
                     resolve(false);
+                });
+        });
+    }
+
+    getPendingForm(docId): Promise<any> {
+        return new Promise(resolve => {
+            this.formsCollection.doc(docId).get()
+                .subscribe(forms => {
+                    resolve(forms.data());
                 });
         });
     }

@@ -47,12 +47,9 @@ export class FillFormComponent implements OnInit {
             .then(() => {
                 console.log('Filled forms updated.');
                 this.fireAuth.getCurrentUser().then(email => {
-                    console.log(email);
                     this.fireStorage.loadPendingForms(email).then(pending => {
-                        console.log(pending);
                         const pendingForms: any[] = pending;
                         pendingForms.splice(this.navParams.get('index'), 1);
-                        console.log(pendingForms);
                         this.fireStorage.updatePendingForms(pendingForms).then(() => {
                             console.log('Pending forms updated');
                             this.closeModal();

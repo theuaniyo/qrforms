@@ -1,12 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonSlides, ModalController, NavController, NavParams} from '@ionic/angular';
+import {IonSlides, ModalController} from '@ionic/angular';
 import {AutenticationService} from '../services/firebase/autentication/autentication.service';
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {ShowQrCodePage} from '../show-qr-code/show-qr-code.page';
-import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
 import {FillFormComponent} from '../fill-form/fill-form.component';
-import {NativeStorage} from '@ionic-native/native-storage/ngx';
 
 @Component({
     selector: 'app-home',
@@ -25,20 +23,18 @@ export class HomePage {
     formID: any;
     pendingForms: any[];
     filledForms: any[];
-    fillingForm: any;
 
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
                 private fireStorage: StorageService,
-                private modalController: ModalController,
-                private nativeStorage: NativeStorage) {
+                private modalController: ModalController) {
     }
 
     ionViewDidEnter() {
         this.SwipedTabsIndicator = document.getElementById('indicator');
         // PARA QUE CUANDO RECARGUE EL EMULADOR DEL MÓVIL VUELVA A LA PÁGINA DE LOGIN ¿CÓMO SE MANTIENE LA SESIÓN INICIADA?
         this.fireAuth.isLogged()
-            .subscribe(isLogged => {
+            .then(isLogged => {
                 if (isLogged) {
                     this.getCurrentUser().then(email => {
                         this.currentUser = email;
@@ -148,7 +144,7 @@ export class HomePage {
             });
             await modal.present();
         } else if (data.type == 'form') {
-            console.log('Mostrando formulario');
+            console.log('Opening form');
             const modal = await this.modalController.create({
                 component: ShowQrCodePage,
                 componentProps: {
@@ -177,13 +173,12 @@ export class HomePage {
             .catch(reason => console.error(reason));
     }
 
-    async presentFillFormModal(form, index) {
+    async presentFillFormModal(formData) {
         const modal = await this.modalController.create({
             component: FillFormComponent,
             componentProps: {
-                title: form.title,
-                fields: form.fields,
-                index: index
+                title: formData.title,
+                fields: formData.fields
             }
         });
         await modal.present();
@@ -194,11 +189,18 @@ export class HomePage {
     }
 
     openFillForm(index: number) {
-        this.presentFillFormModal(this.pendingForms[index], index)
-            .then(() => {
-                console.log('Opening fill form modal');
-            })
-            .catch(reason => console.error(reason));
+        this.fireStorage.getPendingForm(this.pendingForms[index].docId)
+            .then(formsDoc => {
+                const form = {
+                    title: this.pendingForms[index].title,
+                    fields: formsDoc.forms[this.pendingForms[index].title]
+                };
+                this.presentFillFormModal(form)
+                    .then(() => {
+                        console.log('Opening fill form modal');
+                    })
+                    .catch(reason => console.error(reason));
+            });
     }
 
     openQrScanner() {

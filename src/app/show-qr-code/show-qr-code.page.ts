@@ -20,7 +20,6 @@ export class ShowQrCodePage implements OnInit {
     }
 
     createCode() {
-        console.log(this.navParams.get('type'));
         if (this.navParams.get('type') == 'qrID') {
             this.qrData = {
                 docId: this.navParams.get('docId'),
