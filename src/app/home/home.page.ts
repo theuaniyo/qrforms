@@ -17,7 +17,7 @@ export class HomePage {
     SwipedTabsIndicator: any = null;
     tabs = ['selectTab(0)', 'selectTab(1)', 'selectTab(2)'];
     public category: any = '0';
-    ntabs = 3;
+    ntabs = 2;
     currentUser: any;
     qrId: boolean;
     formID: any;
@@ -245,17 +245,21 @@ export class HomePage {
     }
 
     openFillForm(index: number) {
-        this.fireStorage.getPendingForm(this.pendingForms[index].docId)
-            .then(formsDoc => {
-                const form = {
-                    title: this.pendingForms[index].title,
-                    fields: formsDoc.forms[this.pendingForms[index].title]
-                };
-                this.presentFillFormModal(form)
-                    .then(() => {
-                        console.log('Opening fill form modal');
-                    })
-                    .catch(reason => console.error(reason));
+        this.presentLoading()
+            .then(() => {
+                this.fireStorage.getPendingForm(this.pendingForms[index].docId)
+                    .then(formsDoc => {
+                        const form = {
+                            title: this.pendingForms[index].title,
+                            fields: formsDoc.forms[this.pendingForms[index].title]
+                        };
+                        this.presentFillFormModal(form)
+                            .then(() => {
+                                console.log('Opening fill form modal');
+                            })
+                            .catch(reason => console.error(reason));
+                        this.loadingController.dismiss();
+                    });
             });
     }
 

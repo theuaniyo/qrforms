@@ -20,10 +20,6 @@
         <ion-icon name="information-circle" style="margin-right:1px;zoom:0.8"></ion-icon>
         <ion-label>Pend</ion-label>
     </ion-segment-button>
-    <ion-segment-button layout="icon-start" value="2" style="--padding-end:0px;--padding-start:0px">
-        <ion-icon name="time" style="margin-right:1px;zoom:0.8"></ion-icon>
-        <ion-label>Hist</ion-label>
-    </ion-segment-button>
 </ion-segment>
 <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="
     {'width.%': (100/this.tabs.length)}" style="margin-top:2px"></div>
@@ -45,11 +41,6 @@
                         <ion-label (click)="showQrCode('form', i)">{{form.title}}</ion-label>
                     </ion-item>
                 </ion-list>
-                <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="openQrScanner()">
-                    <ion-fab-button>
-                        <ion-icon name="qr-scanner" [routerLink]="'/qr-scanner'"></ion-icon>
-                    </ion-fab-button>
-                </ion-fab>
             </ion-content>
         </ion-slide>
         <ion-slide>
@@ -59,10 +50,10 @@
                 </ion-item>
             </ion-content>
         </ion-slide>
-        <ion-slide>
-            <ion-content class="fixed-scroll">
-                <h1>Slide three</h1>
-            </ion-content>
-        </ion-slide>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="openQrScanner()">
+            <ion-fab-button>
+                <ion-icon name="qr-scanner" [routerLink]="'/qr-scanner'"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
     </ion-slides>
 </ion-content>

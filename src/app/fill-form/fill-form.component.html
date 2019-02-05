@@ -10,7 +10,7 @@
       <ion-input placeholder="{{field}}" formControlName="{{field}}"></ion-input>
     </ion-item>
     <ion-row>
-      <ion-button type="submit">Aceptar</ion-button>
+      <ion-button type="submit" [disabled]="!filledForm.valid">Aceptar</ion-button>
       <ion-button (click)="closeModal(false)">Volver</ion-button>
     </ion-row>
   </form>

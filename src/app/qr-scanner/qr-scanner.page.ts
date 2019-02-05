@@ -4,6 +4,7 @@ import {Dialogs} from '@ionic-native/dialogs/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
+import {ToastController} from '@ionic/angular';
 
 @Component({
     selector: 'app-qr-scanner',
@@ -17,7 +18,8 @@ export class QrScannerPage implements OnInit, OnDestroy {
 
     constructor(private qrScanner: QRScanner,
                 private router: Router,
-                private fireStorage: StorageService) {
+                private fireStorage: StorageService,
+                private toast: ToastController) {
     }
 
     ionViewWillLeave() {
@@ -54,6 +56,7 @@ export class QrScannerPage implements OnInit, OnDestroy {
                                 this.router.navigate(['/home'])
                                     .then(() => {
                                         console.log('Returning to home page');
+                                        this.presentToast('Nuevo formulario añadido');
                                     });
                             } else {
                                 console.log('Failed to add form');
@@ -105,5 +108,14 @@ export class QrScannerPage implements OnInit, OnDestroy {
 
     readQrCode(data) {
         return this.fireStorage.addForm(data);
+    }
+
+    async presentToast(msg) {
+        const toast = await this.toast.create({
+            message: msg,
+            duration: 2000,
+            animated: true
+        });
+        toast.present();
     }
 }
