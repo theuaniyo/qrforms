@@ -11,10 +11,10 @@
         </ion-item>
         <ion-row align-items-center="" padding-top="10">
             <ion-col size="6" align="center">
-                <ion-button type="submit" [disabled]="!filledForm.valid">Aceptar</ion-button>
+                <ion-button type="submit" [disabled]="!filledForm.valid">{{'accept'|translate}}</ion-button>
             </ion-col>
             <ion-col size="6" align="center">
-                <ion-button (click)="closeModal(false)">Volver</ion-button>
+                <ion-button (click)="closeModal(false)">{{'return'|translate}}</ion-button>
             </ion-col>
         </ion-row>
     </form>

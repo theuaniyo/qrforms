@@ -3,7 +3,7 @@ import {AutenticationService} from '../services/firebase/autentication/autentica
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {LoadingController, MenuController, ToastController} from '@ionic/angular';
-
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-login',
@@ -21,7 +21,8 @@ export class LoginPage implements OnInit {
                 private router: Router,
                 private loadingController: LoadingController,
                 private toast: ToastController,
-                private menuCtrl: MenuController) {
+                private menuCtrl: MenuController,
+                private translate: TranslateService) {
     }
 
     ionViewDidEnter() {
@@ -64,14 +65,14 @@ export class LoginPage implements OnInit {
                     console.log(reason);
                     switch (reason.code) {
                         case 'auth/invalid-email':
-                            this.presentToast('Formato de email no válido.');
+                            this.presentToast(this.translate.instant('badly'));
                             break;
                         case 'auth/wrong-password':
-                            this.presentToast('Email o contraseña incorrecto.');
+                            this.presentToast(this.translate.instant('error_login'));
                             break;
                         default:
                             console.log(reason.code);
-                            this.presentToast('Error inesperado.');
+                            this.presentToast(this.translate.instant('unexpected'));
                             break;
                     }
                     this.loadingController.dismiss();
@@ -93,7 +94,7 @@ export class LoginPage implements OnInit {
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Iniciando sesión',
+            message: this.translate.instant('logging'),
             spinner: 'crescent'
         });
         return await loading.present();
@@ -106,5 +107,14 @@ export class LoginPage implements OnInit {
             animated: true
         });
         toast.present();
+    }
+
+    changeLang(e) {
+        // console.log(e.detail.checked);
+        if (e.detail.checked) {
+            this.translate.use('en');
+        } else {
+            this.translate.use('es');
+        }
     }
 }

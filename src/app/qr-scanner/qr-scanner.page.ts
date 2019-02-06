@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
-import {Dialogs} from '@ionic-native/dialogs/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {ToastController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-qr-scanner',
@@ -19,7 +19,9 @@ export class QrScannerPage implements OnInit, OnDestroy {
     constructor(private qrScanner: QRScanner,
                 private router: Router,
                 private fireStorage: StorageService,
-                private toast: ToastController) {
+                private toast: ToastController,
+                private vibration: Vibration,
+                private translate: TranslateService) {
     }
 
     ionViewWillLeave() {
@@ -51,12 +53,13 @@ export class QrScannerPage implements OnInit, OnDestroy {
                     this.scanSub = this.qrScanner.scan().subscribe((d) => {
                         console.log('Read something: ', d);  // Hemos leído un QR y vamos a analizarlo
                         this.readQrCode(d).then(result => {
+                            this.vibration.vibrate(500);
                             if (result) {
                                 console.log('Form added');
                                 this.router.navigate(['/home'])
                                     .then(() => {
                                         console.log('Returning to home page');
-                                        this.presentToast('Nuevo formulario añadido');
+                                        this.presentToast(this.translate.instant('new_form'));
                                     });
                             } else {
                                 console.log('Failed to add form');

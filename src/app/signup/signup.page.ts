@@ -4,6 +4,7 @@ import {AutenticationService} from '../services/firebase/autentication/autentica
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {LoadingController, MenuController, ToastController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-signup',
@@ -22,7 +23,8 @@ export class SignupPage implements OnInit {
                 private fireStorage: StorageService,
                 private loadingController: LoadingController,
                 private menuCtrl: MenuController,
-                private toast: ToastController) {
+                private toast: ToastController,
+                private translate: TranslateService) {
     }
 
     ionViewDidEnter() {
@@ -60,7 +62,7 @@ export class SignupPage implements OnInit {
                         .catch(reason => console.log(reason));
                 });
             } else {
-                this.presentToast('Las contraseñas no coinciden');
+                this.presentToast(this.translate.instant('psw_match'));
             }
         });
         this.buttonPressed = false;
@@ -85,7 +87,7 @@ export class SignupPage implements OnInit {
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Iniciando sesión',
+            message: this.translate.instant('logging'),
             spinner: 'crescent'
         });
         return await loading.present();
@@ -98,5 +100,14 @@ export class SignupPage implements OnInit {
             animated: true
         });
         toast.present();
+    }
+
+    changeLang(e) {
+        // console.log(e.detail.checked);
+        if (e.detail.checked) {
+            this.translate.use('en');
+        } else {
+            this.translate.use('es');
+        }
     }
 }

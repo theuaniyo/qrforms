@@ -7,6 +7,9 @@ import {IonicModule} from '@ionic/angular';
 
 import {QrIdFormPage} from './qr-id-form.page';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {setTranslateLoader} from '../app.module';
 
 const routes: Routes = [
     {
@@ -22,7 +25,15 @@ const routes: Routes = [
         ReactiveFormsModule,
         IonicModule,
         NgxQRCodeModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        HttpClientModule,
+        TranslateModule.forChild({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (setTranslateLoader),
+                deps: [HttpClient]
+            }
+        })
     ],
     declarations: [QrIdFormPage]
 })

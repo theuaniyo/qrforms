@@ -6,6 +6,9 @@ import {Routes, RouterModule} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {QrScannerPage} from './qr-scanner.page';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {setTranslateLoader} from '../app.module';
 
 const routes: Routes = [
     {
@@ -19,7 +22,15 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        HttpClientModule,
+        TranslateModule.forChild({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (setTranslateLoader),
+                deps: [HttpClient]
+            }
+        })
     ],
     declarations: [QrScannerPage]
 })

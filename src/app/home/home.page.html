@@ -13,10 +13,10 @@
              style="background-color:var(--ion-color-primary)"
              color="secondary">
     <ion-segment-button layout="icon-start" value="0" style="--padding-end:0px;--padding-start:0px">
-        <ion-label>Formularios</ion-label>
+        <ion-label>{{'forms'|translate}}</ion-label>
     </ion-segment-button>
     <ion-segment-button layout="icon-start" value="1" style="--padding-end:0px;--padding-start:0px">
-        <ion-label>Pendientes</ion-label>
+        <ion-label>{{'pending'|translate}}</ion-label>
     </ion-segment-button>
 </ion-segment>
 <div id='indicator' class="SwipedTabs-indicatorSegment" [ngStyle]="
@@ -31,12 +31,12 @@
             <ion-content class="fixed-scroll">
                 <ion-list>
                     <ion-searchbar #searchBar id="searchBar" showCancelButton
-                                   cancelButtonText="Cancelar" placeholder="Buscar"
+                                   cancelButtonText="Cancelar" placeholder="{{'search'|translate}}"
                                    (ionInput)="getFilteredFilled($event)" [animated]="true"></ion-searchbar>
                     <ion-item>
                         <ion-icon slot="start" src="../../assets/app-icons/logo.svg"></ion-icon>
-                        <ion-label *ngIf="qrId" (click)="showQrCode('qrID', 0)">Mi QR ID</ion-label>
-                        <ion-label *ngIf="!qrId" (click)="goToQrIdForm()">Pulsa para configurar tu QR ID</ion-label>
+                        <ion-label *ngIf="qrId" (click)="showQrCode('qrID', 0)">{{'my_qr'|translate}}</ion-label>
+                        <ion-label *ngIf="!qrId" (click)="goToQrIdForm()">{{'press_qr'|translate}}</ion-label>
                     </ion-item>
                     <ion-item *ngFor="let form of filteredFilled; let i = index">
                         <ion-label (click)="showQrCode('form', i)">{{form.title}}</ion-label>
@@ -47,7 +47,7 @@
         <ion-slide>
             <ion-content class="fixed-scroll">
                 <ion-searchbar #searchBar id="searchBar2" showCancelButton
-                               cancelButtonText="Cancelar" placeholder="Buscar"
+                               cancelButtonText="Cancelar" placeholder="{{'search'|translate}}"
                                (ionInput)="getFilteredPending($event)" [animated]="true"></ion-searchbar>
                 <ion-item *ngFor="let form of filteredPending; let i = index">
                     <ion-label (click)="openFillForm(i)">{{form.title}}</ion-label>

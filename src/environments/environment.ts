@@ -14,7 +14,9 @@ export const environment = {
         messagingSenderId: '980213451659',
         appUsers: 'Users',
         appForms: 'Forms'
-    }
+    },
+    currentLanguages: ['es', 'en'],
+    defaultLanguage: 'en'
 };
 
 

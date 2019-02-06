@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {AutenticationService} from '../services/firebase/autentication/autentication.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-fill-form',
@@ -24,7 +25,8 @@ export class FillFormComponent implements OnInit {
                 private fireStorage: StorageService,
                 private fireAuth: AutenticationService,
                 private loadingController: LoadingController,
-                private toast: ToastController) {
+                private toast: ToastController,
+                private translate: TranslateService) {
     }
 
     ngOnInit() {
@@ -85,7 +87,7 @@ export class FillFormComponent implements OnInit {
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Cargando',
+            message: this.translate.instant('loading'),
             spinner: 'crescent'
         });
         return await loading.present();

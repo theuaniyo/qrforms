@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {ShowQrCodePage} from '../show-qr-code/show-qr-code.page';
 import {FillFormComponent} from '../fill-form/fill-form.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-home',
@@ -32,7 +33,8 @@ export class HomePage {
                 private modalController: ModalController,
                 private menuCtrl: MenuController,
                 private loadingController: LoadingController,
-                private toast: ToastController) {
+                private toast: ToastController,
+                private translate: TranslateService) {
     }
 
     ionViewDidEnter() {
@@ -52,7 +54,7 @@ export class HomePage {
                                             this.refreshForms()
                                                 .then(dataLoaded => {
                                                     if (!dataLoaded) {
-                                                        this.presentToast('Error al cargar los datos');
+                                                        this.presentToast(this.translate.instant('error_data'));
                                                         this.loadingController.dismiss();
                                                     } else {
                                                         this.loadingController.dismiss();
@@ -60,19 +62,19 @@ export class HomePage {
                                                 })
                                                 .catch(reason => {
                                                     console.log(reason);
-                                                    this.presentToast('Error al cargar los datos');
+                                                    this.presentToast(this.translate.instant('error_data'));
                                                     this.loadingController.dismiss();
                                                 });
                                         })
                                         .catch(reason => {
                                             console.log(reason);
-                                            this.presentToast('Error al cargar los datos');
+                                            this.presentToast(this.translate.instant('error_data'));
                                             this.loadingController.dismiss();
                                         });
                                 })
                                 .catch(reason => {
                                     console.log(reason);
-                                    this.presentToast('Error inesperado')
+                                    this.presentToast(this.translate.instant('unexpected'))
                                         .then(() => {
                                             this.fireAuth.logOut().then(() => {
                                                 this.router.navigate(['/login'])
@@ -273,7 +275,7 @@ export class HomePage {
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Cargando',
+            message: this.translate.instant('loading'),
             spinner: 'crescent'
         });
         return await loading.present();

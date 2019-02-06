@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {StorageService} from '../services/firebase/storage/storage.service';
 import {AutenticationService} from '../services/firebase/autentication/autentication.service';
 import {LoadingController, MenuController, ToastController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-qr-id-form',
@@ -22,7 +23,8 @@ export class QrIdFormPage implements OnInit {
                 private fireAuth: AutenticationService,
                 private menuCtrl: MenuController,
                 private loadingController: LoadingController,
-                private toast: ToastController) {
+                private toast: ToastController,
+                private translate: TranslateService) {
     }
 
     ionViewDidEnter() {
@@ -67,13 +69,13 @@ export class QrIdFormPage implements OnInit {
                             .catch(reason => {
                                 console.log(reason);
                                 this.loadingController.dismiss();
-                                this.presentToast('Error de conexión con la base de datos');
+                                this.presentToast(this.translate.instant('db_error'));
                             });
                     })
                     .catch(reason => {
                         console.log(reason);
                         this.loadingController.dismiss();
-                        this.presentToast('Error de conexión con la base de datos');
+                        this.presentToast(this.translate.instant('db_error'));
                     });
             })
             .catch(reason => console.log(reason));
@@ -96,7 +98,7 @@ export class QrIdFormPage implements OnInit {
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Cargando',
+            message: this.translate.instant('loading'),
             spinner: 'crescent'
         });
         return await loading.present();
