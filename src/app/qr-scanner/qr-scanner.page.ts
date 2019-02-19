@@ -3,7 +3,7 @@ import {QRScanner, QRScannerStatus} from '@ionic-native/qr-scanner/ngx';
 import {Vibration} from '@ionic-native/vibration/ngx';
 import {Router} from '@angular/router';
 import {StorageService} from '../services/firebase/storage/storage.service';
-import {ToastController} from '@ionic/angular';
+import {MenuController, ToastController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -21,7 +21,12 @@ export class QrScannerPage implements OnInit, OnDestroy {
                 private fireStorage: StorageService,
                 private toast: ToastController,
                 private vibration: Vibration,
-                private translate: TranslateService) {
+                private translate: TranslateService,
+                private menuCtrl: MenuController) {
+    }
+
+    ionViewDidEnter() {
+        this.menuCtrl.enable(false);
     }
 
     ionViewWillLeave() {

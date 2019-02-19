@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LoadingController, ModalController, NavParams, ToastController} from '@ionic/angular';
+import {LoadingController, MenuController, ModalController, NavParams, ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {StorageService} from '../services/firebase/storage/storage.service';
@@ -26,7 +26,12 @@ export class FillFormComponent implements OnInit {
                 private fireAuth: AutenticationService,
                 private loadingController: LoadingController,
                 private toast: ToastController,
-                private translate: TranslateService) {
+                private translate: TranslateService,
+                private menuCtrl: MenuController) {
+    }
+
+    ionViewDidEnter() {
+        this.menuCtrl.enable(false);
     }
 
     ngOnInit() {

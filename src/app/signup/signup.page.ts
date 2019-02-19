@@ -59,7 +59,35 @@ export class SignupPage implements OnInit {
                                 })
                                 .catch(reason => console.log(reason));
                         })
-                        .catch(reason => console.log(reason));
+                        .catch(reason => {
+                            console.log(reason.code);
+                            switch (reason.code) {
+                                case 'auth/invalid-email':
+                                    this.loadingController.dismiss()
+                                        .then(() => {
+                                            this.presentToast(this.translate.instant('invalid_email'));
+                                        });
+                                    break;
+                                case 'auth/weak-password':
+                                    this.loadingController.dismiss()
+                                        .then(() => {
+                                            this.presentToast(this.translate.instant('password_err'));
+                                        });
+                                    break;
+                                case 'auth/email-already-in-use':
+                                    this.loadingController.dismiss()
+                                        .then(() => {
+                                            this.presentToast(this.translate.instant('in_use'));
+                                        });
+                                    break;
+                                default:
+                                    this.loadingController.dismiss()
+                                        .then(() => {
+                                            this.presentToast(this.translate.instant('unexpected'));
+                                        });
+                                    break;
+                            }
+                        });
                 });
             } else {
                 this.presentToast(this.translate.instant('psw_match'));

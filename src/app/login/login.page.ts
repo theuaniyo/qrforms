@@ -70,6 +70,9 @@ export class LoginPage implements OnInit {
                         case 'auth/wrong-password':
                             this.presentToast(this.translate.instant('error_login'));
                             break;
+                        case 'auth/user-not-found':
+                            this.presentToast(this.translate.instant('error_login'));
+                            break;
                         default:
                             console.log(reason.code);
                             this.presentToast(this.translate.instant('unexpected'));

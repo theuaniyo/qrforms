@@ -11,9 +11,9 @@
   "contact": "Contacto",
   "version": "Versión",
   "badly": "Formato de email no válido",
-  "password_err": "La contraseña debe de tener al menos 6 caracteres.",
+  "password_err": "La contraseña debe de tener al menos 6 caracteres",
   "in_use": "La dirección email ya está en uso.",
-  "error_login": "El usuario o la contraseña no son correctos.",
+  "error_login": "El usuario o la contraseña no son correctos",
   "success": "Éxito",
   "search": "Buscar",
   "are_you_sure": "¿Esta seguro que desea cerrar la sesión?",
@@ -45,6 +45,7 @@
   "province": "Provincia",
   "state": "Comunidad",
   "zip_code": "Código postal",
-  "db_error": "Error de conexión con la base de datos.",
-  "new_form": "Nuevo formulario añadido."
+  "db_error": "Error de conexión con la base de datos",
+  "new_form": "Nuevo formulario añadido",
+  "invalid_email": "Email no válido"
 }

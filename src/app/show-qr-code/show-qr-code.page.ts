@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalController, NavParams} from '@ionic/angular';
+import {MenuController, ModalController, NavParams} from '@ionic/angular';
 
 @Component({
     selector: 'app-show-qr-code',
@@ -12,7 +12,12 @@ export class ShowQrCodePage implements OnInit {
     private createdQr = null;
 
     constructor(private modalController: ModalController,
-                private navParams: NavParams) {
+                private navParams: NavParams,
+                private menuCtrl: MenuController) {
+    }
+
+    ionViewDidEnter() {
+        this.menuCtrl.enable(false);
     }
 
     ngOnInit() {

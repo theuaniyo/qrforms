@@ -10,9 +10,9 @@
   "help": "Help",
   "about_us": "About us",
   "version": "Version",
-  "badly": "The email address is badly formatted.",
-  "password_err": "Password should be at least 6 characters.",
-  "in_use": "The email address is already in use by another account.",
+  "badly": "The email address is badly formatted",
+  "password_err": "Password should be at least 6 characters",
+  "in_use": "The email address is already in use by another account",
   "error_login": "The user or password is not correct",
   "success": "Success",
   "search": "Search",
@@ -27,7 +27,7 @@
   "unexpected": "Unexpected error.",
   "repeat_password": "Repeat password",
   "already_registered": "Already registered?",
-  "psw_match": "Passwords don't match.",
+  "psw_match": "Passwords don't match",
   "forms": "Forms",
   "pending": "Pending",
   "my_qr": "My QR ID",
@@ -43,6 +43,7 @@
   "province": "Province",
   "state": "State",
   "zip_code": "Zip code",
-  "db_error": "Database connection error.",
-  "new_form": "New form added."
+  "db_error": "Database connection error",
+  "new_form": "New form added",
+  "invalid_email": "Invalid email"
 }
