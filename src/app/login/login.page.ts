@@ -16,6 +16,15 @@ export class LoginPage implements OnInit {
     userData: any;
     buttonPressed: boolean;
 
+    /**
+     * @param auth
+     * @param formBuilder
+     * @param router
+     * @param loadingController
+     * @param toast
+     * @param menuCtrl
+     * @param translate
+     */
     constructor(private auth: AutenticationService,
                 private formBuilder: FormBuilder,
                 private router: Router,
@@ -51,6 +60,9 @@ export class LoginPage implements OnInit {
         });
     }
 
+    /**
+     * Llama al método para iniciar sesión del servicio de autenticación, con los datos introducidos por el usuario
+     */
     onSubmit() {
         this.buttonPressed = true;
         this.userData = this.saveUserData();
@@ -84,6 +96,9 @@ export class LoginPage implements OnInit {
         });
     }
 
+    /**
+     * Inicializa las variables email y password con los datos introducidos por el usuario en el formulario
+     */
     saveUserData() {
         return {
             email: this.logInForm.get('email').value,
@@ -91,10 +106,16 @@ export class LoginPage implements OnInit {
         };
     }
 
+    /**
+     * Comprueba si hay una sesión iniciada
+     */
     userWasLogged() {
         return this.auth.isLogged();
     }
 
+    /**
+     * Abre una ventana de carga
+     */
     async presentLoading() {
         const loading = await this.loadingController.create({
             message: this.translate.instant('logging'),
@@ -103,6 +124,10 @@ export class LoginPage implements OnInit {
         return await loading.present();
     }
 
+    /**
+     * Muestra un toast
+     * @param msg el mensaje que se quiere mostrar en el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,
@@ -112,6 +137,10 @@ export class LoginPage implements OnInit {
         toast.present();
     }
 
+    /**
+     * Cambia el idioma de la aplicación
+     * @param e el evento de cambiar la posición del toggle
+     */
     changeLang(e) {
         // console.log(e.detail.checked);
         if (e.detail.checked) {

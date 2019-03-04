@@ -17,6 +17,16 @@ export class QrIdFormPage implements OnInit {
     data: any;
     buttonPressed: boolean;
 
+    /**
+     * @param router
+     * @param formBuilder
+     * @param fireStorage
+     * @param fireAuth
+     * @param menuCtrl
+     * @param loadingController
+     * @param toast
+     * @param translate
+     */
     constructor(private router: Router,
                 private formBuilder: FormBuilder,
                 private fireStorage: StorageService,
@@ -45,12 +55,18 @@ export class QrIdFormPage implements OnInit {
         });
     }
 
+    /**
+     * Vuelve a la pantalla Home
+     */
     returnToHome() {
         this.router.navigate(['/home'])
             .then(value => console.log(value))
             .catch(reason => console.log(reason));
     }
 
+    /**
+     * Recoge los datos del formulario y se los pasa al método que los guarda en la base de datos
+     */
     onSubmit() {
         this.buttonPressed = true;
         this.presentLoading()
@@ -82,6 +98,10 @@ export class QrIdFormPage implements OnInit {
         this.buttonPressed = false;
     }
 
+    /**
+     * Devuelve los datos introducidos por el usuario en el formulario
+     * @returns los datos del usuario en formato JSON
+     */
     saveUserData() {
         return {
             nombre: this.qrIdForm.get('name').value,
@@ -96,6 +116,9 @@ export class QrIdFormPage implements OnInit {
         };
     }
 
+    /**
+     * Abre una ventana de carga
+     */
     async presentLoading() {
         const loading = await this.loadingController.create({
             message: this.translate.instant('loading'),
@@ -104,6 +127,10 @@ export class QrIdFormPage implements OnInit {
         return await loading.present();
     }
 
+    /**
+     * Abre un toast
+     * @param msg el mensaje que se quiere mostrar en el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,

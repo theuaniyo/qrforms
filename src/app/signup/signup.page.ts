@@ -39,6 +39,9 @@ export class SignupPage implements OnInit {
         });
     }
 
+    /**
+     * Recoge los datos del formulario y llama al método para crear un nuevo usuario
+     */
     onSubmit() {
         this.buttonPressed = true;
         this.passwordCheck().then(passwordCheck => {
@@ -96,6 +99,10 @@ export class SignupPage implements OnInit {
         this.buttonPressed = false;
     }
 
+    /**
+     * Devuelve los datos introducidos en el formulario por el usuario
+     * @returns los datos del formulario en formato JSON
+     */
     saveUserData() {
         return {
             email: this.signUpForm.get('email').value,
@@ -103,6 +110,10 @@ export class SignupPage implements OnInit {
         };
     }
 
+    /**
+     * Comprueba si las contraseñas coinciden
+     * @returns Promise<boolean> true si coinciden y false en caso contrario
+     */
     passwordCheck(): Promise<boolean> {
         return new Promise(resolve => {
             if (this.signUpForm.get('password').value === this.signUpForm.get('repeatPassword').value) {
@@ -113,6 +124,9 @@ export class SignupPage implements OnInit {
         });
     }
 
+    /**
+     * Abre una ventana de carga
+     */
     async presentLoading() {
         const loading = await this.loadingController.create({
             message: this.translate.instant('logging'),
@@ -121,6 +135,10 @@ export class SignupPage implements OnInit {
         return await loading.present();
     }
 
+    /**
+     * Abre un toast
+     * @param msg el mensaje que muestra el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,
@@ -130,6 +148,10 @@ export class SignupPage implements OnInit {
         toast.present();
     }
 
+    /**
+     * Cambia el idioma de la aplicación
+     * @param e el evento de cambiar la posición del toggle
+     */
     changeLang(e) {
         // console.log(e.detail.checked);
         if (e.detail.checked) {

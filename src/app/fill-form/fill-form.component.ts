@@ -18,6 +18,18 @@ export class FillFormComponent implements OnInit {
     filledForm: FormGroup;
     formData: any[];
 
+    /**
+     * @param modalController
+     * @param navParams
+     * @param router
+     * @param formBuilder
+     * @param fireStorage
+     * @param fireAuth
+     * @param loadingController
+     * @param toast
+     * @param translate
+     * @param menuCtrl
+     */
     constructor(private modalController: ModalController,
                 private navParams: NavParams,
                 private router: Router,
@@ -50,6 +62,9 @@ export class FillFormComponent implements OnInit {
         this.modalController.dismiss().then(value => console.log(value));
     }
 
+    /**
+     * Guarda los datos del formulario en la base de datos
+     */
     onSubmit() {
         this.formData = this.saveFormData();
         this.presentLoading().then(() => {
@@ -80,6 +95,9 @@ export class FillFormComponent implements OnInit {
         });
     }
 
+    /**
+     * Guarda el título y los campos del formulario para después mostrarlos en pantalla
+     */
     saveFormData() {
         const data = [];
         const fields = {};
@@ -90,6 +108,9 @@ export class FillFormComponent implements OnInit {
         return data;
     }
 
+    /**
+     * Abre una ventana de carga
+     */
     async presentLoading() {
         const loading = await this.loadingController.create({
             message: this.translate.instant('loading'),
@@ -98,6 +119,10 @@ export class FillFormComponent implements OnInit {
         return await loading.present();
     }
 
+    /**
+     * Abre un toast
+     * @param msg el mensaje que se quiere mostrar en el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,

@@ -16,6 +16,15 @@ export class QrScannerPage implements OnInit, OnDestroy {
     data: any;
     scanSub: any;
 
+    /**
+     * @param qrScanner
+     * @param router
+     * @param fireStorage
+     * @param toast
+     * @param vibration
+     * @param translate
+     * @param menuCtrl
+     */
     constructor(private qrScanner: QRScanner,
                 private router: Router,
                 private fireStorage: StorageService,
@@ -114,10 +123,18 @@ export class QrScannerPage implements OnInit, OnDestroy {
             });
     }
 
+    /**
+     * Llama al método que añade un formulario en la base de datos
+     * @param data los datos leídos del código QR
+     */
     readQrCode(data) {
         return this.fireStorage.addForm(data);
     }
 
+    /**
+     * Abre un toast
+     * @param msg el mensaje que se quiere mostrar en el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,

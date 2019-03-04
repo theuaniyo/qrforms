@@ -27,6 +27,16 @@ export class HomePage {
     filteredFilled: any[];
     filteredPending: any[];
 
+    /**
+     * @param fireAuth
+     * @param router
+     * @param fireStorage
+     * @param modalController
+     * @param menuCtrl
+     * @param loadingController
+     * @param toast
+     * @param translate
+     */
     constructor(private fireAuth: AutenticationService,
                 private router: Router,
                 private fireStorage: StorageService,
@@ -93,6 +103,10 @@ export class HomePage {
             });
     }
 
+    /**
+     * Llama a los métodos para cargar los formularios pendientes y terminados
+     * @returns Promise<boolean> true si carga los formularios correctamente o false si no los carga
+     */
     refreshForms(): Promise<boolean> {
         return new Promise(resolve => {
             this.loadPendingForms()
@@ -149,20 +163,36 @@ export class HomePage {
         }
     }
 
+    /**
+     * Devuelve el usuario actual
+     * @returns el email del usuario
+     */
     getCurrentUser() {
         return this.fireAuth.getCurrentUser();
     }
 
+    /**
+     * Comprueba si el usuario tiene configurado su QR ID
+     * @returns true si está configurado o false si no
+     */
     hasQrId() {
         return this.fireStorage.hasQrID(this.currentUser);
     }
 
+    /**
+     * Abre la ventana para configurar el QR ID
+     */
     goToQrIdForm() {
         this.router.navigate(['/qr-id-form'])
             .then(value => console.log(value))
             .catch(reason => console.log(reason));
     }
 
+    /**
+     * Muestra el código QR del formulario
+     * @param type 'qrID' o 'form'
+     * @param index el índice del formulario, si se va a mostrar un QR ID pasar 0
+     */
     showQrCode(type, index) {
         this.fireStorage.getUserDocId(this.currentUser)
             .then(docId => {
@@ -192,6 +222,10 @@ export class HomePage {
             });
     }
 
+    /**
+     * Abre la ventana que muestra el código qr del QR ID o del formulario
+     * @param data un array con los datos del QR ID o del formulario
+     */
     async presentQrIdModal(data) {
         if (data.type == 'qrID') {
             console.log('Mostrando QR ID');
@@ -218,6 +252,10 @@ export class HomePage {
         }
     }
 
+    /**
+     * Carga los formularios pendientes
+     * @returns un array con los formularios pendientes
+     */
     loadPendingForms() {
         return this.fireStorage.loadPendingForms(this.currentUser)
             .then(pending => {
@@ -226,6 +264,10 @@ export class HomePage {
             .catch(reason => console.error(reason));
     }
 
+    /**
+     * Carga los formularios terminados
+     * @returns un array con los formularios terminados
+     */
     loadFilledForms() {
         return this.fireStorage.loadFilledForms(this.currentUser)
             .then(filled => {
@@ -234,6 +276,10 @@ export class HomePage {
             .catch(reason => console.error(reason));
     }
 
+    /**
+     * Le pasa a la ventana para rellenar el formulario su título y sus campos
+     * @param formData un array con los datos del formulario
+     */
     async presentFillFormModal(formData) {
         const modal = await this.modalController.create({
             component: FillFormComponent,
@@ -249,6 +295,10 @@ export class HomePage {
             });
     }
 
+    /**
+     * Abre la ventana para rellenar un formulario
+     * @param index el índice del formulario
+     */
     openFillForm(index: number) {
         this.presentLoading()
             .then(() => {
@@ -268,11 +318,17 @@ export class HomePage {
             });
     }
 
+    /**
+     * Abre el escáner QR
+     */
     openQrScanner() {
         this.router.navigate(['/qr-scanner'])
             .then(() => console.log('Opening QR Scanner'));
     }
 
+    /**
+     * Abre una ventana de carga
+     */
     async presentLoading() {
         const loading = await this.loadingController.create({
             message: this.translate.instant('loading'),
@@ -281,6 +337,10 @@ export class HomePage {
         return await loading.present();
     }
 
+    /**
+     * Abre un toast
+     * @param msg el mensaje que se quiere mostrar en el toast
+     */
     async presentToast(msg) {
         const toast = await this.toast.create({
             message: msg,
@@ -290,11 +350,18 @@ export class HomePage {
         toast.present();
     }
 
+    /**
+     * Inicializa las listas que se van a filtrar para las búsquedas
+     */
     initializeItems() {
         this.filteredFilled = this.filledForms;
         this.filteredPending = this.pendingForms;
     }
 
+    /**
+     * Filtra el listado de formularios terminados
+     * @param $event cuando se pulsa una tecla
+     */
     async getFilteredFilled($event) {
         this.initializeItems();
         // set val to the value of the searchbar
@@ -308,6 +375,10 @@ export class HomePage {
         }
     }
 
+    /**
+     * Filtra el listado de formularios pendientes
+     * @param $event cuando se pulsa una tecla
+     */
     async getFilteredPending($event) {
         this.initializeItems();
         // set val to the value of the searchbar

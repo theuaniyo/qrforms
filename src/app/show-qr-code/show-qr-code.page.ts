@@ -24,6 +24,9 @@ export class ShowQrCodePage implements OnInit {
         this.createCode();
     }
 
+    /**
+     * Genera el código QR
+     */
     createCode() {
         if (this.navParams.get('type') == 'qrID') {
             this.qrData = {

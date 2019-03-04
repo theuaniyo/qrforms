@@ -11,21 +11,41 @@ export class StorageService {
     usersCollection: AngularFirestoreCollection<any>;
     formsCollection: AngularFirestoreCollection<any>;
 
+    /**
+     *
+     * @param firestore
+     * @param fireAuth
+     */
     constructor(private firestore: AngularFirestore,
                 private fireAuth: AutenticationService) {
         this.usersCollection = firestore.collection<any>(environment.firebaseConfig.appUsers);
         this.formsCollection = firestore.collection<any>(environment.firebaseConfig.appForms);
     }
 
+    /**
+     * Crea un documento dentro de la base de datos para un usuario
+     * @param email el email del usuario
+     * @returns Promise<DocumentReference> la referencia al documento recién creado
+     */
     createUserStorage(email) {
         const userData = {'email': email, 'pending': [], 'filled': []};
         return this.usersCollection.add(userData);
     }
 
+    /**
+     * Devuelve los datos almacenados del usuario
+     * @param currentUser el email del usuario
+     * @returns Promise<QuerySnapshot> los datos del usuario
+     */
     getUserData(currentUser) {
         return this.usersCollection.ref.where('email', '==', currentUser).get();
     }
 
+    /**
+     * Comprueba si el usuario tiene configurado su QR ID
+     * @param currentUser el email del usuario actual
+     * @returns Promise<boolean> true si lo tiene configurado, false si no
+     */
     hasQrID(currentUser): Promise<boolean> {
         return new Promise((resolve) => {
             this.getUserData(currentUser)
@@ -44,6 +64,12 @@ export class StorageService {
         });
     }
 
+    /**
+     * Crea la clave QR ID dentro del documento del usuario y le asigna los valores que haya introducido
+     * @param currentUser el usuario actual
+     * @param data los datos del usuario
+     * @returns Promise<void>
+     */
     createQrId(currentUser, data): Promise<any> {
         return new Promise((resolve) => {
             this.getUserDocId(currentUser).then(value => {
@@ -52,6 +78,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Devuelve el ID del documento del usuario
+     * @param currentUser el usuario actual
+     * @returns Promise<any> el email del usuario actual
+     */
     getUserDocId(currentUser): Promise<any> {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
@@ -60,6 +91,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Carga los formularios pendientes desde la base de datos del usuario actual
+     * @param currentUser el usuario actual
+     * @returns un array con los formularios pendientes del usuario
+     */
     loadPendingForms(currentUser): Promise<any> {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
@@ -68,6 +104,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Carga los formularios terminados desde la base de datos del usuario actual
+     * @param currentUser el usuario actual
+     * @returns Promise<any> un array con los formularios terminados del usuario
+     */
     loadFilledForms(currentUser): Promise<any> {
         return new Promise((resolve) => {
             this.getUserData(currentUser).then(value => {
@@ -76,6 +117,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Pasa un formulario pendiente a terminado dentro de la base de datos y le inserta los datos introducidos por el usuario.
+     * @param data un array con los campos del formulario rellenos por el usuario
+     * @returns Promise<any>
+     */
     fillForm(data: any[]): Promise<any> {
         return new Promise(resolve => {
             this.fireAuth.getCurrentUser().then(email => {
@@ -93,6 +139,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Actualiza los formularios pendientes del usuario, se usa cuando se quiere pasar un formulario de pendiente a terminado
+     * @param data un array con la nueva lista de formularios
+     * @returns Promise<any>
+     */
     updatePendingForms(data: any[]): Promise<any> {
         return new Promise(resolve => {
             this.fireAuth.getCurrentUser()
@@ -105,6 +156,10 @@ export class StorageService {
         });
     }
 
+    /**
+     * Añade un formulario nuevo a la lista de pendientes del usuario
+     * @param data un array con el título y los campos del formulario
+     */
     addForm(data): Promise<boolean> {
         return new Promise(resolve => {
             this.fireAuth.getCurrentUser()
@@ -141,6 +196,11 @@ export class StorageService {
         });
     }
 
+    /**
+     * Devuelve la lista de formularios de un documento concreto
+     * @param docId el id del documento al que pertenece el formulario
+     * @returns Promise<any> la lista con los formularios
+     */
     getPendingForm(docId): Promise<any> {
         return new Promise(resolve => {
             this.formsCollection.doc(docId).get()
