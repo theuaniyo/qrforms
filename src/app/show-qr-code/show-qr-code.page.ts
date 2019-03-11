@@ -8,8 +8,8 @@ import {MenuController, ModalController, NavParams} from '@ionic/angular';
 })
 export class ShowQrCodePage implements OnInit {
 
-    private qrData;
-    private createdQr = null;
+    qrData;
+    createdQr = null;
 
     constructor(private modalController: ModalController,
                 private navParams: NavParams,

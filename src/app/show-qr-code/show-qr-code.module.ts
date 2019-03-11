@@ -32,7 +32,7 @@ const routes: Routes = [
             }
         })
     ],
-    declarations: [ShowQrCodePage]
+    declarations: []
 })
 export class ShowQrCodePageModule {
 }
